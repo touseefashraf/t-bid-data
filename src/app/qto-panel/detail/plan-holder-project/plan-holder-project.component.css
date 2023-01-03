@@ -1,0 +1,9 @@
+.img-width{
+    width:10%;
+}
+.set-cursor {
+    cursor: pointer;
+}
+.download-all {
+    background : var(--ap-red);
+}

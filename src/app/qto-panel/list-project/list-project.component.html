@@ -1,0 +1,93 @@
+<div class="main-container">
+    <div class="title-wrapper">
+        <h2 class="title">Projects List</h2>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input placeholder="Project Title" class="w-100 form-control" [(ngModel)]="filters.title">
+
+        </div>
+        <div>
+            <button (click)="getProjects()" class="green sm" [disabled]="searchLoading" [ngClass]="searchLoading?'in-progress':''">Search <span></span><span></span><span></span></button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Bid Phase</th>
+                    <th>Location</th>
+
+                    <th class="col-actions" style="width:200px">Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="fetching">
+                <tr>
+                    <td colspan="100" style="height: 250px;">
+                        <app-component-loader></app-component-loader>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="projectList.length > 0 && !fetching">
+                <tr *ngFor="let d of projectList; let i = index" id="row-{{i}}">
+                    <td>
+                        {{d.title}}
+                    </td>
+                    <td>
+                        {{d.bid_phase}}
+
+
+                    </td>
+                    <td>
+                        {{d.project_location}}
+                    </td>
+
+                    <td class="text-center">
+                        <a class="mr-2" style="cursor: pointer;" [routerLink]="['/qto/detail/'+d.id]"><button class="sm green">View</button></a>
+                        <a class="mr-2" style="cursor: pointer;" [routerLink]="['/qto/detail/'+d.id+'/qto']"><button class="sm red">Docs</button></a>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="projectList.length == 0 && !fetching">
+                <tr>
+                    <td colspan="100">
+                        <app-no-data-found></app-no-data-found>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="Page navigation example" *ngIf="!fetching">
+        <ul class="pagination justify-content-center  mt-3">
+            <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+            </li>
+            <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+            </li>
+
+            <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                    <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                </li>
+            </ng-container>
+
+            <li class="page-item" *ngIf="pagination.next_page_url != null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+            </li>
+            <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<ng-template #deleteTemplate>
+    <p>Are you sure that you want to delete project?</p>
+    <button class="xs black" (click)="deletePop.hide()">No</button>
+    <button class="xs red" (click)="delete()">Yes</button>
+</ng-template>

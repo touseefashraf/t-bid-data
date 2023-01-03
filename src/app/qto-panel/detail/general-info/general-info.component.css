@@ -1,0 +1,6 @@
+.cell-height {
+    min-height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid;
+    background: #F5F5F5;
+}

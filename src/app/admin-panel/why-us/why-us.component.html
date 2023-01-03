@@ -1,0 +1,22 @@
+<div class="main-container">
+    <div class="title-wrapper">
+        <h2 class="title">Why Us</h2>
+        <button class="red sm" (click)="saveContent()" [disabled]="saveLoading" [ngClass]="saveLoading?'in-progress':''">Save <span></span><span></span><span></span></button>
+    </div>
+    <!-- <div class="content-container mt-2">
+        <div class="">
+            <p>Top Content</p>
+            <angular-editor [config]="editorConfig" [(ngModel)]="topContent"></angular-editor>
+        </div>
+    </div>
+    <div class="content-container mt-2">
+        <div class="">
+            <p>Bottom Content</p>
+            <angular-editor [config]="editorConfig" [(ngModel)]="bottomContent"></angular-editor>
+        </div>
+    </div> -->
+    <p>Top Content</p>
+    <quill-editor [(ngModel)]="topContent"></quill-editor>
+    <p>Bottom Content</p>
+    <quill-editor [(ngModel)]="bottomContent"></quill-editor>
+</div>

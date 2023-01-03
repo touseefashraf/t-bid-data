@@ -1,0 +1,113 @@
+<div class="heading">
+    <h3>Download History:</h3>
+</div>
+<ng-container *ngIf="!fetching">
+    <ng-container *ngIf="subscriptionStatus == true">
+        <div>
+            <p><b>{{downloadList.download_used}}</b> Download used out of <b>{{downloadList.total_downloads}}</b></p>
+        </div>
+        <div class="progressbar-containers">
+            <progress id="file" [value]="percentage" max="100" width="100%"></progress>
+            <p class="title">{{percentage}}%</p>
+        </div>
+    </ng-container>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Sr #</th>
+                    <th>Project Title</th>
+                    <th>File Name</th>
+                    <!-- <th>Size</th> -->
+                    <th>Download Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="downloadList.downloads.length > 0; else noDataFound">
+                <tr *ngFor="let d of downloadList.downloads; let i = index">
+                    <td>
+                        {{i+1}}
+                    </td>
+                    <td>
+                        {{d.project.title}}
+                    </td>
+                    <td>
+                        {{d.name}}
+                    </td>
+                    <!-- <td>
+                        {{d.file_size}} KB
+                    </td> -->
+                    <td>{{moment(d.downloads[0].created_at).format(dateFormat)}} </td>
+                    <td>
+                        <div class="img">
+                            <span class="download-container">
+                                <img (click)="downloadDocument(d.id,d)" class="w-100" src="assets/images/excel.png">
+                                <p>Download</p>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <ng-template #noDataFound>
+                <tbody>
+                    <tr>
+                        <td colspan="5">
+                            <app-no-data-found></app-no-data-found>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-template>
+        </table>
+        <!-- <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-left  mt-3">
+            <li class="page-item">
+                <small *ngIf="page<10">Current Page: 0{{page}}</small>
+                <small *ngIf="page>=10">Current Page: {{page}}</small>
+            </li>
+        </ul>
+        <ul class="pagination justify-content-left">
+            <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+            </li>
+            <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+            </li>
+            <ng-container *ngIf="pagination.last_page <= 6">
+
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+
+            </ng-container>
+
+            <ng-container *ngIf="pagination.last_page >= 7">
+
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li *ngIf="i<4" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                    <li *ngIf="(pagination.last_page-i) == 3" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li *ngIf="(pagination.last_page-i)==1 || (pagination.last_page-i)==2" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+
+            </ng-container>
+
+            <li class="page-item" *ngIf="pagination.next_page_url != null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+            </li>
+            <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+            </li>
+        </ul>
+    </nav> -->
+    </div>
+</ng-container>
+<div class="loader-row" *ngIf="fetching">
+    <img src="/assets/img/loading.gif" class="data-loader">
+</div>

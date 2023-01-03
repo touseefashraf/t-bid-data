@@ -1,0 +1,299 @@
+<div *ngIf="isAuthenticated && api.user.user_type == 'customer'" class="auth-serachbar">
+    <div class="d-flex justify-content-center align-items-center">
+        <select name="" id="" (change)="getSerachData($event.target.value)">
+            <option disabled selected value="">--Saved Searches--</option>
+            <option *ngFor="let d of savedSerachList" [value]="d.id">{{d.title}}</option>
+        </select>
+        <button class="secondary" (click)="openModalSaveSearches(saveSearchTemplate)">New Serch</button>
+    </div>
+</div>
+<div class="serach-header">
+    <div class="d-flex justify-content-between align-items-center first-container">
+        <div class="adjust-width-first">
+            <div>
+                <i class="fas fa-search search-icon"></i>
+                <span class="p-heading">Keyword</span>
+            </div>
+            <div class="input-holder-custom">
+                <input (keyup.enter)="search()" type="text" [(ngModel)]="filters.title" placeholder="Windows, Roof etc.">
+            </div>
+        </div>
+        <div class="adjust-width-first">
+            <div>
+                <i class="fa fa-map-marker search-icon"></i>
+                <span class="p-heading">Location</span>
+            </div>
+            <div class="input-holder-custom">
+                <input (keyup.enter)="search()" type="text" placeholder="New York" [(ngModel)]="filters.address" #searchAddress>
+            </div>
+        </div>
+        <div class="adjust-width-first">
+            <div>
+                <i class="fa fa-sort-amount-desc search-icon"></i>
+                <span class="p-heading">Sort</span>
+            </div>
+            <div class="input-holder-custom">
+                <select [(ngModel)]="filters.order_by">
+                    <option value="dateDesc">Bid Date (Newest to Oldest) </option>
+                    <option value="dateAsc">Bid Date (Oldest to Newest)</option>
+                    <option value="priceAsc">Bid Amount (Low to High)</option>
+                    <option value="priceDesc">Bid Amount (High to Low)</option>
+                </select>
+            </div>
+        </div>
+        <div class="adjust-width-first buttons-custom-container">
+            <div class="buttons-custom-holder">
+                <button (click)="search()" class="secondary d-flex align-items-center" [disabled]="searchLoading" [ngClass]="searchLoading?'in-progress':''">
+                    <p>Search</p>
+                    <i class="fa fa-arrow-right search-btn-icon"> </i>
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="d-flex justify-content-between filter-btn">
+                    <i (click)="showAdvance = !showAdvance" *ngIf="!filterApplied()" class="fa fa-filter filter-btn filter"></i>
+                    <i (click)="clearFilter()" *ngIf="filterApplied()" style="background-color:#454545;" class="fa fa-filter filter-btn filter"></i>
+                    <i (click)="showAdvance = !showAdvance" class="fas fa-chevron-down filter-btn"></i>
+                </div>
+                <!-- <div *ngIf="filterApplied()" (click)="clearFilter()" class="filter-btn">
+                    X
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="d-flex adjust-width-second-container mt-3 justify-content-between align-items-center" [ngClass]="{'show-advance': showAdvance, 'hide-advance': !showAdvance}">
+        <div class="adjust-width-second">
+            <div>
+                <span class="p-heading">Date Range</span>
+            </div>
+            <div class="from-to-holder">
+                <input [(ngModel)]="filters.min_date" type="text" placeholder="mm/dd/yyyy" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY' }">
+                <p>To</p>
+                <input [(ngModel)]="filters.max_date" type="text" placeholder="mm/dd/yyyy" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY' }">
+            </div>
+        </div>
+        <div class="adjust-width-second">
+            <div>
+                <span class="p-heading">Bid Amount</span>
+            </div>
+            <div class="from-to-holder">
+                <input [(ngModel)]="filters.min_amount" type="text" placeholder="any">
+                <p>To</p>
+                <input [(ngModel)]="filters.max_amount" type="text" placeholder="any">
+            </div>
+        </div>
+        <div class="adjust-width-second-select">
+            <div>
+                <span class="p-heading">Status</span>
+            </div>
+            <div class="input-holder-custom">
+                <select [(ngModel)]="filters.project_status">
+                    <option value="">All</option>
+                    <option value="open">Open Solicitation</option>
+                    <option value="bid_results">Bid Results</option>
+                    <option value="awarded">Awarded</option>
+                </select>
+            </div>
+        </div>
+        <div class="adjust-width-second-select">
+            <div>
+                <span class="p-heading">Divisions</span>
+            </div>
+            <div class="input-holder-custom">
+                <select [(ngModel)]="filters.division_id">
+                    <option value="">All</option>
+                    <option *ngFor="let d of divisionList" [value]="d.id">{{d.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card-holder">
+    <ng-container *ngIf="fetching">
+        <app-search-loader></app-search-loader>
+    </ng-container>
+    <ng-container *ngIf="!fetching">
+        <div class="card card-colored" *ngFor="let d of projectList">
+                <div class="row">
+                    <div class="col-md-1 text-center flag">
+                        <img *ngIf="d.country==null" class="flag-img" src="/assets/img/no-image.png">
+                        <img *ngIf="d.country=='Canada'" class="flag-img-can" src="/assets/img/canadaa.png">
+                        <img *ngIf="d.country=='USA'" class="flag-img-usa" src="/assets/img/us.jpg">
+                    </div>
+                    <div class="col-md-8">
+                        <span>
+                            <img class="mark-svgs new-svg" *ngIf="d.mark_as_new == 1 && moment(d.created_at).format('YYYY-MM-DD')==moment().format('YYYY-MM-DD')" src="/assets/images/New-tbd.svg" alt="">
+                            <img class="mark-svgs update-svg" *ngIf="d.mark_as_update == 1" src="/assets/images/Update-tbd.svg" alt="">
+                            <a [routerLink]="['/project-details/'+d.id+'/details']">
+                                <h2 class="update-svg-section"><span class="title" [routerLink]="['/project-details/'+d.id+'/details']" style="cursor: pointer;outline: none;">{{d.title}}</span>
+                                </h2>
+                            </a>
+                        </span>
+                        <p class="des">{{d.description}}</p>
+                        <p class="location">
+                            <i class="fa fa-map-marker address-icon"></i>
+                            <span>{{d.project_location}}</span>
+                        </p>
+                    </div>
+                    <div class="col-md-3 text-right bid-details">
+                        <p class="mt-2"><b>Bid Amount: $</b><span>{{d.bid_amount | commaSeparation}}</span></p>
+                        <p class="mt-2"><b>Bid Date:</b><span>{{moment(d.bid_date).format('MMM DD, YYYY')}}</span></p>
+                        <div class="d-flex justify-content-end align-items-center mt-4">
+                            <ng-container *ngIf="isAuthenticated && api.user.user_type == 'customer'">
+                                <i class="fa fa-heart-o heart mr-1" (click)="addRemoveFav(d)" [ngClass]="{'heart-active': checkFavProject(d)}" aria-hidden="true"></i>
+                            </ng-container>
+                            <a [routerLink]="['/project-details/'+d.id+'/details']"><button [routerLink]="['/project-details/'+d.id+'/details']" routerLinkActive="router-link-active" class="primary" style="outline: none;">
+                                    <span>See Detail</span>
+                                    <i class="fa fa-arrow-right ml-2" [ngClass]="{'class': true}"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <nav aria-label="Page navigation example" *ngIf="!fetching && projectList.length > 0">
+            <ul class="pagination justify-content-center  mt-3">
+                <li class="page-item" *ngIf="filters.page==1 && filters.period_type=='old'">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="filters.period_type='new'; setPagination(1)">Latest Projects</a>
+                </li>
+                <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(filters.page-1)"><i class="fas fa-arrow-left"></i></a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1"><i class="fas fa-arrow-left"></i></a>
+                </li>
+
+                <!-- <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container> -->
+                 <ng-container *ngIf="pagination.last_page <= 6">
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="pagination.last_page >= 7">
+
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li *ngIf="i<4" [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                    <li *ngIf="(pagination.last_page-i) == 3" [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li *ngIf="(pagination.last_page-i)==1 || (pagination.last_page-i)==2" [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+
+            </ng-container>
+
+                <li class="page-item" *ngIf="pagination.next_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+filters.page+1)"><i class="fas fa-arrow-right"></i></a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1"><i class="fas fa-arrow-right"></i></a>
+                </li>
+                <li class="page-item" *ngIf="pagination.next_page_url == null && filters.period_type=='new'">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="filters.period_type='old'; setPagination(1)">Older Projects</a>
+                </li>
+            </ul>
+        </nav>
+    </ng-container>
+    <div *ngIf="!fetching && projectList.length == 0" class="text-center">
+        <h1>No Data Found</h1>
+    </div>
+</div>
+<ng-template #saveSearchTemplate>
+    <div class="custom-modal-container">
+        <div class="text-left modal-header">
+            <p>Save Search</p>
+        </div>
+    </div>
+    <form [formGroup]="saveSearchForm" (ngSubmit)="saveSearchData(saveSearchForm, f)" #f="ngForm">
+        <div class="modal-body">
+            <div class="d-flex keyword flex-column">
+                <label>Save Search as</label>
+                <input type="text" placeholder="Save Search as" formControlName="title">
+                <div *ngIf="ui.checkErrors(g.title, f)" class="errors">
+                    <p *ngIf="g.title.errors.required">Title is required</p>
+                    <p *ngIf="g.title.errors.minlength">Title should atleast 5 characters</p>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Keyword</label>
+                    <input type="text" placeholder="Enter Keyword" formControlName="keyword">
+                    <div *ngIf="ui.checkErrors(g.keyword, f)" class="errors">
+                        <p *ngIf="g.keyword.errors.maxlength">Keyword should not be greater then 100 characters</p>
+                        <p *ngIf="g.keyword.errors.minlength">Keyword should atleast 5 characters</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Location</label>
+                    <input type="text" placeholder="Enter Location" formControlName="location">
+                    <div *ngIf="ui.checkErrors(g.location, f)" class="errors">
+                        <p *ngIf="g.location.errors.maxlength">Location should not be greater then 100 characters</p>
+                        <p *ngIf="g.location.errors.minlength">Location should atleast 5 characters</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+                <div class="radio-btn">
+                    <input type="radio" id="radio1" value="open" name="project_status" formControlName="project_status">
+                    <label for="radio1">Open Solicitation</label>
+                </div>
+                <div class="radio-btn">
+                    <input type="radio" id="radio2" value="bid_results" name="project_status" formControlName="project_status">
+                    <label for="radio2">Bid Results</label>
+                </div>
+                <div class="radio-btn">
+                    <input type="radio" id="radio3" value="awarded" name="project_status" formControlName="project_status">
+                    <label for="radio3">Awarded</label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Price Range From</label>
+                    <input type="number" min="0" placeholder="Enter Min Price" formControlName="price_from">
+                    <div *ngIf="ui.checkErrors(g.price_from, f)" class="errors">
+                        <p *ngIf="g.price_from.errors.min">Min Price cant be less then 0</p>
+                        <p *ngIf="g.price_from.errors.max">Min Price cant be greater then Max Price</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Price Range To</label>
+                    <input type="number" placeholder="Enter Max Price" formControlName="price_to">
+                    <div *ngIf="ui.checkErrors(g.price_to, f)" class="errors">
+                        <!-- <p *ngIf="g.price_to.errors.max">Location should not be greater then 100 characters</p> -->
+                        <p *ngIf="g.price_to.errors.min">Max price cant be less then min price</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Date From</label>
+                    <input type="text" placeholder="Enter Min Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY' }" formControlName="date_from">
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Date To</label>
+                    <input type="text" placeholder="Enter Max Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY' }" formControlName="date_to">
+                </div>
+            </div>
+            <div class="hr-line">
+                <hr>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="primary" [disabled]="waiting.saveSearch" [ngClass]="waiting.saveSearch?'in-progress':''">Save Search
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button type="button" class="gray-button-bg ml-3" (click)="cancel(f)">Close</button>
+            </div>
+        </div>
+    </form>
+</ng-template>

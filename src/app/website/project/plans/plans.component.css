@@ -1,0 +1,242 @@
+.no-data {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 60px;
+
+}
+.topNav {
+    width: 100%;
+    display: flex;
+    height: 35px;
+    background-color: #555;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    /* padding-right:20px */
+}
+.topNavItem {
+    width: 25%;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.pageContainer {
+    width: 100%;
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 20px;
+    border-top: 1px solid #dddddd;
+}
+.pageData {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    width: 25%;
+}
+.specs-docs-image {
+    width: 35px;
+}
+.set-cursor {
+    cursor: pointer;
+}
+.set-cursor a:hover {
+    text-decoration: underline !important;
+}
+.grabDoc {
+    width: 27%;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #084887;
+    height: 100%;
+    padding-top: 5px;
+    padding-left: 9px;
+    text-align: center;
+}
+
+.error-container {
+    background-color: #d40000;
+    padding: 7px 14px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 10px;
+}
+.error-container p {
+    margin: 0px;
+}
+.error-container p,
+i {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 17px;
+}
+.modal-body {
+    background-color: #084887;
+}
+.svg-section {
+    position: relative;
+}
+.mark-svgs {
+    position: absolute;
+    top: -7px;
+}
+.new-svg {
+    width: 46px;
+    height: 26px;
+}
+.update-svg {
+    width: 57px;
+    height: 30px;
+    top: -11px;
+}
+.pdf-holder {
+    position: relative;
+    margin-right: 10px;
+}
+.pdf-container2 {
+    height: 500px;
+    width: 900px;
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: -250px;
+    right: 10px;
+    bottom: 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    background: #084887;
+    padding: 10x;
+}
+
+.pdf-holder:hover .pdf-container2 {
+    display: block;
+}
+.pdf-file {
+    height: 500px;
+    width: 900px;
+}
+.error-msg {
+    display: flex;
+    justify-content: center;
+    padding: 5%;
+    flex-direction: column;
+    margin-top: 40%;
+    text-align: center;
+    color: #fff;
+}
+.error-msg h1 {
+    font-size: 15px;
+    color: #fff;
+}
+
+.error-msg2 {
+    display: flex;
+    justify-content: center;
+    padding: 5%;
+    flex-direction: column;
+    margin-top: 5%;
+    text-align: center;
+    width: 100%;
+}
+.error-msg2 h1 {
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.error-msg2 img {
+    width: 220px;
+    height: 180px;
+    margin: auto;
+}
+
+.view {
+    width: 50%;
+    display: flex;
+    text-align: center;
+    margin: auto;
+}
+.dowload {
+    margin-left: -27px;
+    margin: auto;
+}
+@media only screen and (max-width: 528px) {
+    .hide-col {
+        display: none;
+    }
+}
+@media only screen and (max-width: 425px) {
+    .grabDoc {
+        padding-top: 10px;
+        width: 50%;
+    }
+    .specs-docs-image {
+        width: 25px;
+    }
+    .topNav,
+    .pageContainer {
+        width: 100%;
+    }
+    .file-data {
+      /*  width: calc(100vw - 30px);
+        overflow-x: scroll;*/
+    }
+    .file-data .topNav .topNavItem {
+        width: 50%;
+    }
+    .file-data .pageContainer .pageData {
+        width: 50%;
+    }
+    .error-container p {
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .pdf-container2 {
+        height: 350px;
+        width: 390px;
+        top: -59px;
+        right: -15px;
+        bottom: 0;
+    }
+
+    .pdf-file {
+        height: 300px;
+        width: 390px;
+        right: -15px;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .pdf-container2 {
+        height: 350px;
+        width: 355px;
+        top: -59px;
+        right: -30px;
+        bottom: 0;
+    }
+    .pdf-file {
+        height: 300px;
+        width: 355px;
+        right: -30px;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .pdf-container2 {
+        height: 350px;
+        width: 286px;
+        top: -59px;
+        right: -30px;
+        bottom: 0;
+    }
+    .pdf-file {
+        height: 250px;
+        width: 286px;
+        right: -30px;
+    }
+}

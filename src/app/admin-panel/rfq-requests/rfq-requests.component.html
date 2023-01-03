@@ -1,0 +1,108 @@
+<!-- <p>
+  rfq-requests works!
+</p> -->
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4>RFQ Requests</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Project Title</th>
+                        <th>Bid Amount</th>
+                        <th>Bid Location</th>
+                        <th>Customer Name</th>
+                        <th>Contact</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+                <ng-container *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="rfqRequestList.length>0; else noDataFound" >
+                        <tr *ngFor="let d of rfqRequestList; let i = index">
+                            <td>{{d.project.title}} </td>
+                            <td>{{d.project.bid_amount}} </td>
+                            <td>{{d.project.bid_location}} </td>
+                            <td> {{d.user.customer.first_name}} {{d.user.customer.last_name}} </td>
+                            <td> {{d.user.customer.contact_1}} <br> {{d.user.customer.contact_2}} </td>
+                            <td class="text-center">
+                                <div style="width: 100px;text-align: center;" [class]="getStatusClass(d.approval_status)">{{ getStatusFormat(d.approval_status) }}</div>
+
+                            </td>
+                            <td class=" d-flex justify-content-center align-items-center">
+                                <div *ngIf="d.approval_status=='pending'" class=" d-flex justify-content-center">
+                                    <div class="d-flex">
+                                        <button  class="green sm" (click)="approveRequestConfirmation(approveTemplate,d.id,i)">Approve</button>
+                                        <button  class="red sm" (click)="rejectRequestConfirmation(rejectTemplate,d.id,i)">Reject</button>
+                                    </div>
+                                </div>
+                                <div class="text-center" *ngIf="d.approval_status!='pending'">
+                                    <p>Request has been <br>{{d.approval_status|uppercase}}</p>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="7">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+</div>
+<ng-template #approveTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to approve the RFQ request?</p>
+        <form [formGroup]="approveForm" (ngSubmit)="approveRequest(f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Approval Remarks</label>
+                        <input type="text" formControlName="approve_reason" class="form-control" placeholder="Enter a Approval Remarks" [ngClass]="{'form-submitted': f.submitted}">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="sm black" (click)="modalRef.hide()">Cancel</button>
+            <button type="submit" class="sm green" [disabled]="loginLoading" [ngClass]="loginLoading?'in-progress':''">Yes
+                <span></span><span></span><span></span>
+            </button>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #rejectTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to reject the RFQ request?</p>
+        <form [formGroup]="rejectForm" (ngSubmit)="rejectRequest(f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Rejection Reason <span class="mendatory">*</span></label>
+                        <input type="text" formControlName="reject_reason" class="form-control" placeholder="Enter a Rejection Reason" [ngClass]="{'form-submitted': f.submitted}">
+                        <div *ngIf="ui.checkErrors(g.reject_reason , f)" class="errors">
+                            <p *ngIf="g.reject_reason.errors.required">Reject Reason is required</p>
+                            <p *ngIf="g.reject_reason.errors.maxlength">Reject Reason should be 500 Characters</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="sm black" (click)="modalRef.hide()">Cancel</button>
+            <button type="submit" class="sm green" [disabled]="loginLoading" [ngClass]="loginLoading?'in-progress':''">Yes
+                <span></span><span></span><span></span>
+            </button>
+        </form>
+    </div>
+</ng-template>
+

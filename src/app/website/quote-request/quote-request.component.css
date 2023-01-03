@@ -1,0 +1,78 @@
+.top-bar p {
+    font-weight: bold;
+    font-size: 18px;
+    color: green;
+}
+.successfully-registered h1 {
+    font-size: 15px;
+}
+.files-main {
+    display: flex; flex-wrap: wrap;
+    justify-content: space-between;
+}
+.files-item{
+    width: 48%;
+    margin-bottom: 10px;
+}
+.head{
+
+    margin-bottom: 50px !important;
+    text-align: left !important;
+    font-size: 32px;
+}
+.head-bold {
+    font-weight: bold;
+}
+.green-border {
+    border-top: 1px solid #39c1a8;
+    width: 8%;
+    border-radius: 7px 7px 7px 7px;
+    height: 5px;
+    background-color: #39c1a8;
+    text-align: center;
+    margin: 0px auto;
+    margin-top: 5px;
+
+}
+div.cform .form-control {
+    border: 2px solid #e1e1e1;
+    background: #fafafa;
+    color: #555555;
+    height: 53px;
+    line-height: 49px;
+    padding: 0 20px;
+}
+.quotes div.cform .form-control {
+    border: 1px solid #e1e1e1;
+}
+div.cform div {
+    margin-bottom: 29px;
+}
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+.blue-button-bg {
+    background-image: url(/assets/images/blue-button-bg.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-bottom: 20px;
+    background-color: #084887;
+
+}
+.errors p{
+    font-size: 13px;
+    font-weight: bold;
+    color: #f12112;
+}
+
+.dColor{
+    color: #f12112;
+}
+@media only screen and (max-width: 768px){
+    .files-item   {
+        width: 100%;
+    }
+}

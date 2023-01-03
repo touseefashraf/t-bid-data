@@ -1,0 +1,77 @@
+.card-holder {
+    margin-top: 1%;
+    margin-bottom: 4%;
+    min-height: 450px;
+}
+.card-holder .card {
+    padding: 18px 16px;
+    min-width: 94%;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.card h2 {
+    color: #084887;
+    font-size: 24px;
+}
+.card .location,
+.card .address-icon {
+    color: #39c1a8;
+    font-size: 14px;
+}
+.address-icon {
+    margin-right: 5px;
+}
+.des {
+    margin: 27px 0px;
+    font-size: 18px;
+}
+.card-colored {
+    background-color: #ecf0f3;
+}
+.bid-details {
+    text-align: right;
+}
+.bid-details p {
+    color: var(--iprimary);
+}
+
+.bid-details p span {
+    margin-left: 5px;
+}
+.bid-details-btn span,
+.bid-details-btn i {
+    font-size: 14px;
+}
+.heading{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #084887;
+    font-family: "Baloo Bhaina 2", cursive;
+    /*text-shadow: 0px 0px 1px #084887;*/
+}
+.heading h1{
+border-bottom: 4px solid green;
+}
+@media only screen and (max-width:768px) {
+    .heading h3 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+@media only screen and (max-width: 528px){ 
+    .bid-details {
+        text-align: center;
+    }
+   
+    .set-text {
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width:425px){ 
+    .heading h1{
+        font-size: 20px;
+    }
+}

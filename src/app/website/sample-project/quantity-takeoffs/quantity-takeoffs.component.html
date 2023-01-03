@@ -1,0 +1,23 @@
+<div class="" *ngIf="ds.dataStatus == 'done'">
+    <div class="file-data">
+        <div class="topNav">
+            <div class="topNavItem">File Name</div>
+            <div class="topNavItem hide-col">File Size</div>
+            <div class="topNavItem hide-col">Uploaded Date</div>
+            <div class="topNavItem set-center">Action</div>
+        </div>
+        <ng-container *ngIf="data.length > 0">
+            <ng-container *ngFor="let d of data">
+                <div class="pageContainer" *ngIf="d.document_type == 'qto'">
+                    <div class="pageData">{{d.name}}</div>
+                    <div class="pageData hide-col">{{d.file_size | fileSizeConverter}}</div>
+                    <div class="pageData hide-col">{{moment(d.created_at).format(dateFormat)}}</div>
+                    <div class="pageData pdf-holder" (click)="downloadDocument(d.id,d)">
+                        <img class="specs-docs-image" src="assets/images/excel.png">
+                        <p>Download</p>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

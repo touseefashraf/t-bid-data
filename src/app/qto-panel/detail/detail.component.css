@@ -1,0 +1,184 @@
+.tabs-setting {
+    text-align: center;
+    border-bottom: solid #555555;
+    padding: 15px;
+}
+td {
+    vertical-align: top !important;
+    padding: 10px;
+}
+.image-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 212px;
+    height: 143.6px;
+    /* border: 1px solid #ddd; */
+    padding: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.image-thumbnail img {
+    width: 100%;
+}
+
+.msg {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--ap-red);
+}
+
+.msg-small {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--ap-red);
+    margin-top: -6px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.w-140 {
+    width: 140px;
+}
+
+.featured-wrapper {
+    display: flex;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    justify-content: space-between;
+    padding: 5px;
+    margin: 5px 0px;
+}
+
+button.xs {
+    font-size: 12px;
+}
+
+.rejected-property {
+    border-left: 10px solid var(--ap-red);
+}
+.yellow {
+    color: yellow;
+}
+.cell-height {
+    min-height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid;
+    background: #F5F5F5;
+}
+
+.tab-font {
+    font-size: 12px !important;
+}
+
+.headbar {
+    overflow: hidden;
+    background-color: rgb(189, 189, 189);
+    margin: -10px -20px 50px -20px;
+}
+
+ul#progressbar {
+    padding-inline-start: 0;
+}
+
+#progressbar li {
+    width: 99px;
+    height: 45px;
+    display: flex;
+    font-size: 20px;
+    color: #ffffff;
+    background: #084887;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0 10px 0px 1px;
+    padding: 2px 0 0 0;
+    cursor: pointer;
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#progressbar li p {
+    color: #ffffff;
+    font-size: 15px;
+    margin: -2px 0 0 0;
+    line-height: 1;
+}
+#progressbar li i {
+    color: #ffffff;
+}
+
+#progressbar li.active {
+    color: #084887;
+    background: #ffffff;
+}
+#progressbar li.active p,
+#progressbar li.active i {
+    color: #084887;
+}
+/*
+#progressbar #details:before {
+    font-family: FontAwesome;
+    content: "\f46d";
+    font-size: 27px;
+}
+
+#progressbar #planHolders:before {
+    font-family: FontAwesome;
+    content: "\f1ad";
+    font-size: 27px;
+}
+
+#progressbar #qtoVideo:before {
+    font-family: FontAwesome;
+    content: "\f1ad";
+    font-size: 27px;
+}
+#progressbar #owner:before {
+    font-family: FontAwesome;
+    content: "\f1ad";
+    font-size: 27px;
+}
+
+#progressbar #planDocument:before {
+    font-family: FontAwesome;
+    content: "\f15b";
+    font-size: 27px;
+}
+
+#progressbar #specsDocument:before {
+    font-family: FontAwesome;
+    content: "\f15c";
+    font-size: 27px;
+}
+
+#progressbar #addendumDocument:before {
+    font-family: FontAwesome;
+    content: "\f574";
+    font-size: 27px;
+}
+
+#progressbar #otherDocument:before {
+    font-family: FontAwesome;
+    content: "\f574";
+    font-size: 27px;
+}
+
+#progressbar #qtoDocument:before {
+    font-family: FontAwesome;
+    content: "\f0ae";
+    font-size: 27px;
+}*/
+@media only screen and (max-width: 1024px) {
+    #progressbar li {
+        width: 135px;
+        margin: 3px 3px;
+    }
+}

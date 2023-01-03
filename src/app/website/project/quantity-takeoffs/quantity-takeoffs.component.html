@@ -1,0 +1,94 @@
+<div class="" *ngIf="ds.dataStatus == 'done'">
+    <div class="error-container" *ngIf="this.api.user.user_type == 'customer' && checkSubRange == false && susbcriptionError !== ''">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle mr-3"></i>
+            <p>{{susbcriptionError}}</p>
+        </div>
+        <div>
+            <i style="cursor: pointer" (click)="susbcriptionError = ''" class="fas fa-times"></i>
+        </div>
+    </div>
+    <div class="file-data">
+        <div class="topNav">
+            <div class="topNavItem">File Name</div>
+            <!-- <div class="topNavItem">Division</div> -->
+            <div class="topNavItem hide-col">File Size</div>
+            <div class="topNavItem hide-col">Uploaded Date</div>
+            <div class="topNavItem">Price</div>
+            <div class="topNavItem text-center">Add to Cart</div>
+        </div>
+        <ng-container *ngIf="ds.projectDetails.documents.length > 0 && !errorsFetching">
+            <ng-container *ngFor="let d of ds.projectDetails.documents">
+                <div class="pageContainer" *ngIf="d.document_type == 'qto'">
+                    <div class="pageData svg-section">
+                        <span>{{d.name}}</span>
+                        <img class="mark-svgs new-svg" *ngIf="d.mark_as_new == 1" src="/assets/images/New-tbd.svg" alt="">
+                        <img class="mark-svgs update-svg" *ngIf="d.mark_as_update == 1" src="/assets/images/Update-tbd.svg" alt="">
+                    </div>
+                    <!-- <div class="pageData">
+                        <span *ngIf="ds.projectDetails['project_csi_divisions'].length>0">
+                            <span class="badge badge-info ml-1" *ngFor="let tag of ds.projectDetails['project_csi_divisions']">{{tag['csi_division'].name}}</span>
+                        </span>
+                    </div> -->
+                    <div class="pageData hide-col">{{d.file_size | fileSizeConverter}}</div>
+                    <div class="pageData hide-col">{{m(d.created_at).format(dateFormat)}}</div>
+                    <div class="pageData">$ {{d.qto_price | commaSeparation}}</div>
+                    <!-- <ng-container *ngIf="this.api.user.user_type == '' || checkSubRange == false;else downloadData">
+                        <div *ngIf="checkCart(d)" class="pageData text-center">
+                            <i class="fas fa-shopping-cart add-to-cart" (click)="addToCart(d)"></i>
+                        </div>
+                        <div *ngIf="!checkCart(d)" class="pageData text-center">
+                            <i class="fas fa-trash delete-from-cart" (click)="removeFromCart(d)"></i>
+                        </div>
+                    </ng-container>
+                    <ng-template #downloadData>
+                        <div class="pageData text-center" style="cursor: pointer;" (click)="downloadDocument(d.id,d)">
+                            <img class="specs-docs-image" src="assets/images/excel.png">
+                            <p>Download</p>
+                        </div>
+                    </ng-template> -->
+                    <ng-container *ngIf="this.api.user.user_type == '' || (checkSubRange == false && !checkFileStatus(d));else downloadData">
+                        <div *ngIf="checkCart(d)" class="pageData text-center">
+                            <!-- <i class="fas fa-shopping-cart add-to-cart" (click)="addToCart(d)"></i> -->
+                            <img style="width: 50px;cursor: pointer;" src="/assets/images/cart-icon.png" (click)="addToCart(d)" alt="">
+                        </div>
+                        <div *ngIf="!checkCart(d)" class="pageData text-center">
+                            <!-- <i class="fas fa-trash delete-from-cart" (click)="removeFromCart(d)"></i> -->
+                            <button [routerLink]="['/cart']" routerLinkActive="router-link-active" style="background-color:#084887;">View Cart</button>
+                        </div>
+                    </ng-container>
+                    <ng-template #downloadData>
+                        <div class="pageData text-center" style="cursor: pointer;" (click)="downloadDocument(d.id,d)">
+                            <img class="specs-docs-image" src="assets/images/excel.png">
+                            <p>Download</p>
+                        </div>
+                    </ng-template>
+
+
+
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div class="text-center" *ngIf="getData()">
+        <h1 class="no-data">Please check back later, we'll update <strong>Quantity Takeoff Documents</strong> soon!</h1>
+        <!-- <h1 class="no-data">No Data Found</h1> -->
+    </div>
+</div>
+
+<ng-template #errorModal>
+    <div class="modal-body">
+        <div class="text-right">
+            <i style="cursor: pointer" class="fas fa-times" (click)="modalRef.hide()"></i>
+        </div>
+        <div class="text-center mt-3">
+            <img src="/assets/images/decide-graphic.png" alt="">
+        </div>
+        <div class="text-center mt-3">
+            <p style="color: white;font-weight: bold;">{{susbcriptionError}}</p>
+        </div>
+        <div class="text-center mt-3">
+            <button class="secondary" [routerLink]="['/plans']" (click)="modalRef.hide()">Subscription Plan</button>
+        </div>
+    </div>
+</ng-template>

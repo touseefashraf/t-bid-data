@@ -1,0 +1,13 @@
+<div class="main-container">
+    <div class="title-wrapper">
+        <h2 class="title">Discounts</h2>
+        <button class="red sm" (click)="saveContent()" [disabled]="saveLoading" [ngClass]="saveLoading?'in-progress':''">Save <span></span><span></span><span></span></button>
+    </div>
+    <!-- <div class="content-container mt-2">
+        <div class="">
+            <angular-editor [config]="editorConfig" [(ngModel)]="dataToSend.content"></angular-editor>
+        </div>
+    </div> -->
+    <quill-editor [(ngModel)]="dataToSend.content"></quill-editor>
+
+</div>

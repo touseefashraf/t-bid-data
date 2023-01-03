@@ -1,0 +1,210 @@
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4>Plan Holder</h4>
+            <button class="green sm mb-2" (click)="openModal(plan, -1)">Add</button>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label>Company Name</label>
+                <input (keyup.enter)="getfilterList()" type="text" class="form-control" [(ngModel)]="filters.name" placeholder="Enter Company Name">
+            </div>
+
+            <div class="col col d-flex align-items-end">
+                <label>&nbsp;</label>
+                <div class="btn-group" dropdown>
+                    <button type="button" class="lg green" (click)="getfilterList()" [disabled]="searchLoading" [ngClass]="searchLoading?'in-progress':''">Search <span></span><span></span><span></span></button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th width="200">Email</th>
+                        <th width="200">Contact</th>
+                        <th width="200">Address</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+
+                <ng-container *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="planList.length > 0; else noDataFound">
+                        <tr *ngFor="let d of planList; let i = index">
+                            <td>{{d.poc_first_name+' '+d.poc_last_name}} </td>
+                            <td>{{d.company_name}} </td>
+                            <td>{{d.email}} </td>
+                            <td>
+                                <span *ngIf="d.contact_1"><b>Primary:</b> {{d.contact_1}}</span>
+                                <span *ngIf="d.contact_2"><br><b>Secondary:</b> {{d.contact_2}}</span>
+                            </td>
+                            <td>{{d.address}} </td>
+                            <td class=" d-flex justify-content-center">
+                                <div class="image-upload">
+                                    <label for="file-input" (click)="openModal(plan,i)">
+                                        <span class="themeCol2"><i class="fa fa-edit"></i></span>
+                                    </label>
+                                </div>
+
+                                <div class="px-2 danger">
+                                    <i class="fa fa-trash" (click)="confirmingModal(confirming, d.id,i)"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+
+                </ng-container>
+
+            </table>
+        </div>
+        <nav aria-label="Page navigation example" *ngIf="!fetching">
+            <ul class="pagination justify-content-left  mt-3">
+                <li class="page-item">
+                    <small *ngIf="filters.page<10">Current Page: 0{{filters.page}}</small>
+                    <small *ngIf="filters.page>=10">Current Page: {{filters.page}}</small>
+                </li>
+            </ul>
+            <ul class="pagination justify-content-left">
+                <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(filters.page-1)">Previous</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+                </li>
+                <ng-container *ngIf="pagination.last_page <= 6">
+
+                    <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                        <li [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                    </ng-container>
+
+                </ng-container>
+
+                <ng-container *ngIf="pagination.last_page >= 7">
+
+                    <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                        <li *ngIf="i<4" [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                        <li *ngIf="(pagination.last_page-i) == 3" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link">...</a>
+                        </li>
+                        <li *ngIf="(pagination.last_page-i)==1 || (pagination.last_page-i)==2" [class]="filters.page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                    </ng-container>
+
+                </ng-container>
+
+                <li class="page-item" *ngIf="pagination.next_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+filters.page+1)">Next</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<ng-template #plan>
+    <div class="modal-header">
+        <h4 class="modal-poc_first_name pull-left">Manage Plan Holder</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="planForm" (ngSubmit)="save(planForm, f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">First Name </label>
+                    <input formControlName="poc_first_name" class="form-control mt-0" placeholder="Enter First Name" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.poc_first_name, f)" class="errors">
+                        <p *ngIf="g.poc_first_name.errors.required">First Name is required</p>
+                        <p *ngIf="g.poc_first_name.errors.maxlength">Maximum {{ g.poc_first_name.errors.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Last Name </label>
+                    <input formControlName="poc_last_name" class="form-control mt-0" placeholder="Enter Last Name" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.poc_last_name, f)" class="errors">
+                        <p *ngIf="g.poc_last_name.errors.required">Last Name is required</p>
+                        <p *ngIf="g.poc_last_name.errors.maxlength">Maximum {{ g.poc_last_name.errors.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Email</label>
+                    <input formControlName="email" class="form-control mt-0" placeholder="Enter Email" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.email, f)" class="errors">
+                        <p *ngIf="g.email.errors.required">Email is required</p>
+                        <p *ngIf="g.email.errors.email">Please enter valid email</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Company Name <span class="mendatory">*</span></label>
+                    <input formControlName="company_name" class="form-control mt-0" placeholder="Enter Company Name" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.company_name, f)" class="errors">
+                        <p *ngIf="g.company_name.errors.required">Company Name is required</p>
+                        <p *ngIf="g.company_name.errors.maxlength">Maximum {{ g.company_name.errors.maxlength.requiredLength }} charaters</p>
+                        
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Primary Contact </label>
+                    <input formControlName="contact_1" class="form-control mt-0" placeholder="Enter Primary Contact" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.contact_1, f)" class="errors">
+                        <p *ngIf="g.contact_1.errors.required">Primary Contact is required</p>
+                        <p *ngIf="g.contact_1.errors.maxlength">Maximum {{ g.contact_1.errors.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Fax number</label>
+                    <input formControlName="contact_2" class="form-control mt-0" placeholder="Enter Fax Number" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.contact_2, f)" class="errors">
+                        <p *ngIf="g.contact_2.errors.required">Fax Contact is required</p>
+                        <p *ngIf="g.contact_2.errors.maxlength">Maximum {{ g.contact_2.errors.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Address</label>
+                    <input formControlName="address" class="form-control mt-0" placeholder="Enter Address" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.address, f)" class="errors">
+                        <p *ngIf="g.address.errors.required">Address is required</p>
+                        <p *ngIf="g.address.errors.maxlength">Maximum {{ g.address.errors.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="red sm m-1">save</button>
+            <button type="button" class="black sm ml-1" (click)="cancelRegionButton(f); findInvalidControls()">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #confirming>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete?</p>
+        <button type="button" class="green sm" (click)="modalRef.hide()">No</button>
+        <button type="button" class="red sm" (click)="delete()" [disabled]="yesLoading" [ngClass]="yesLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>

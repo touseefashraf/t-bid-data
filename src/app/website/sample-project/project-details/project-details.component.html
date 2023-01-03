@@ -1,0 +1,111 @@
+<div class="p-details-page print-content" *ngIf="ds.dataStatus == 'done'">
+    <div class="print-content-logo">
+        <img src="/assets/images/TBD-full-color-logo.png" alt="">
+    </div>
+    <div class="p-details-container container">
+        <div class="row">
+            <div *ngIf="data" class="print-heading col-lg-12 col-md-12">
+                <div class="item row">
+                    <h3 class="col-lg-12 col-sm-12">Project </h3>
+                    <p class="col-lg-12 col-sm-12">{{data.title}}</p>
+                </div>
+            </div>
+
+            <div *ngIf="data" class="col-lg-6 col-sm-6">
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Solicitation</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.solicitation}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bidding Method</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.bid_method}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bid Phase</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.bid_phase}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Completion Time</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.completion_time}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Liquidated Damages</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.liquidated_damages}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Pre-Bid Meeting</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.pre_bid_date}} {{data.pre_bid_location}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bonds</h3>
+                    <div class="col-lg-6 col-sm-12">
+                        <p *ngIf="data.b_bond!=0.00">Bid Bond : {{data.b_bond}}%</p>
+                        <p *ngIf="data.p_bond!=0.00">Performance Bond : {{data.p_bond}}%</p>
+                        <p *ngIf="data.pay_bond!=0.00">Payment Bond : {{data.pay_bond}}%</p>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div *ngIf="data" class="col-lg-6 col-sm-6">
+                <!-- <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bid Range</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.max_bid}} and Above</p>
+                </div>
+                <hr> -->
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Location</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.project_location}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bid Date</h3>
+                    <p class="col-lg-8 col-sm-12">{{moment(data.bid_date).format(dateFormat)}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bid Amount</h3>
+                    <p class="col-lg-8 col-sm-12">$ {{data.bid_amount | commaSeparation}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Bid Location</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.bid_location}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">Notes</h3>
+                    <p class="col-lg-8 col-sm-12">{{data.notes}}</p>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">CSI Division</h3>
+                    <div class="col-lg-8 col-sm-12">
+                        <p *ngFor="let d of data.project_csi_divisions">{{d.csi_division?.name}}</p>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="item row">
+                    <h3 class="col-lg-4 col-sm-12">MWSEBs and SDVOBs</h3>
+                    <div class="col-lg-6 col-sm-12">
+                        <p *ngIf="data.mbe!=0">MBE : {{data.mbe}}%</p>
+                        <p *ngIf="data.wbe!=0">WBE : {{data.wbe}}%</p>
+                        <!-- <p *ngIf="data.dbe!=0.00">DBE : {{data.dbe}}%</p> -->
+                        <p *ngIf="data.sdvob!=0">SDVOB : {{data.sdvob}}%</p>
+                        <p *ngIf="data.eeo!=0">EEO : 0{{data.eeo}}%</p>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div *ngIf="data==null" class="col-md-12">
+                <h2 class="text-center">No Data Found</h2>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,367 @@
+.auth-serachbar {
+    background-color: #454545;
+    padding: 2% 5%;
+}
+.auth-serachbar select {
+    padding: 12px 20px;
+    width: 47%;
+    margin-right: 20px;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #454545;
+}
+.serach-header {
+    background-color: var(--iprimary);
+    padding: 15px 130px;
+}
+.adjust-width-first {
+    width: 23%;
+}
+.adjust-width-second {
+    width: 23%;
+}
+.p-heading {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+p {
+    margin: 0px;
+}
+.input-holder-custom {
+    margin-top: 10px;
+}
+.input-holder-custom input,
+.input-holder-custom input:active {
+    border-radius: 5px;
+    padding: 10px 10px;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+.input-holder-custom select,
+.input-holder-custom select:active {
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px 10px;
+    border: 1px solid white;
+    background-color: var(--iprimary);
+    color: white;
+    outline: none;
+}
+
+.input-holder-custom select option {
+    color: white;
+}
+.buttons-custom-container {
+    margin-top: 32px;
+}
+.buttons-custom-container .buttons-custom-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 18px;
+    color: white;
+    margin-right: 10px;
+}
+
+.search-btn-icon {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 800;
+}
+.orange {
+    width: 115px;
+    height: 40px;
+    padding: 10px;
+    outline: none;
+}
+.orange p {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.filter-btn {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    background-color: #2f649a;
+    border: 1px solid #2f649a;
+    border-radius: 5px;
+    padding: 5px 5px;
+    cursor:pointer;
+}
+
+.filter-btn .filter {
+    margin-right: 12px;
+}
+.adjust-width-second {
+    background-color: #18548f !important;
+    padding: 5px 19px 19px 19px;
+    border-radius: 6px;
+    width: 23%;
+}
+.adjust-width-second .from-to-holder input {
+    width: 45%;
+    outline: none;
+}
+.adjust-width-second-select {
+    width: 23%;
+}
+
+.adjust-width-second-select select {
+    width: 100%;
+    border-radius: 5px;
+    padding: 13px 10px;
+    border: 1px solid white;
+    background-color: var(--iprimary);
+    color: white;
+}
+
+.row-filters {
+    /* padding: 0px 15px; */
+}
+
+.from-to-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+.from-to-holder p {
+    color: #ffffff;
+}
+
+.from-to-holder input {
+    background-color: var(--iprimary);
+    border: 1px solid white;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 13px 10px;
+    width: 136px;
+}
+.from-to-holder input::placeholder {
+    color: white;
+}
+.row-filters select {
+    background-color: var(--iprimary);
+    color: #ffffff;
+    width: 100%;
+    padding: 13px 10px;
+    border-radius: 5px;
+}
+.card-holder {
+    margin-top: 1%;
+    margin-bottom: 4%;
+    min-height: 450px;
+}
+.card-holder .card {
+    padding: 18px 16px;
+    min-width: 94%;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.card h2 {
+    color: #084887;
+    font-size: 24px;
+}
+.card .location,
+.card .address-icon {
+    color: #39c1a8;
+    font-size: 14px;
+}
+.address-icon {
+    margin-right: 5px;
+}
+.des {
+    margin: 15px 0px;
+    font-size: 18px;
+}
+.card-colored {
+    background-color: #ecf0f3;
+}
+.bid-details p {
+    color: var(--iprimary);
+}
+
+.bid-details p span {
+    margin-left: 5px;
+}
+.bid-details-btn span,
+.bid-details-btn i {
+    font-size: 14px;
+}
+.show-advance {
+    display: flex;
+    height: 120px;
+    opacity: 1;
+    transition: height 0.75s, opacity 2.75s;
+}
+.hide-advance {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: height 0.75s, opacity 1s;
+}
+.heart {
+    font-size: 30px;
+}
+.heart:hover {
+    color: green;
+    font-size: 36px;
+}
+.heart-active {
+    color: red;
+}
+.custom-modal-container {
+    /* border-top: 4px solid var(--primary); */
+}
+.custom-modal-container .modal-header {
+    background-color: #ccc;
+    padding: 12px 8px;
+}
+
+.custom-modal-container .modal-header p {
+    font-size: 26px;
+    color: black;
+    /* font-weight: bold; */
+}
+.keyword {
+    width: 100%;
+}
+.keyword input {
+    border-radius: 5px;
+    padding: 8px 8px;
+    border: 1px solid #ccc;
+}
+.modal-body label {
+    padding: 0px;
+    margin: 0px;
+    font-weight: bold;
+}
+.radio-btn label {
+    margin-left: 5px;
+}
+.hr-line {
+    margin: 6px 0px;
+}
+.update-svg-section {
+    position: relative;
+}
+.update-svg-section img {
+    position: absolute;
+}
+.new-svg {
+    width: 46px;
+    height: 26px;
+    top: -4;
+}
+.update-svg {
+    width: 57px;
+    height: 30px;
+    margin-left: 5px;
+    /* top: -11px; */
+}
+.flag {
+    display: flex;
+    align-self: center;
+}
+.flag-img {
+    width: 70px;
+}
+.flag-img-can {
+    width: 60px;
+    height: 100%;
+}
+.flag-img-usa {
+    width: 60px;
+    height: 100%;
+}
+.page-item{
+    cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+    .flag-img {
+        width: 50px;
+    }
+    .flag-img-can {
+        width: 45px;
+    }
+    .flag-img-usa {
+        width: 45px;
+    }
+    .first-container {
+        width: 90%;
+    }
+    .serach-header{
+        padding: 15px 40px;
+    }
+}
+@media (min-width: 500px) and (max-width: 576px) {
+    .serach-header {
+        padding-right: 0px !important;
+    }
+    .first-container {
+        width: 73% !important;
+    }
+    .p-heading {
+        font-size: 15px;
+    }
+    .search-icon {
+        font-size: 15px;
+    }
+}
+@media screen and (max-width: 426px) {
+    .card-holder {
+        margin-top: 4%;
+        max-width: 100vw;
+
+    }
+    .title{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .des{
+        font-size: 16px;
+    }
+    .card-holder .card{
+        padding: 18px 3px;
+    }
+
+    .buttons-custom-container {
+        margin-top: 10px;
+    }
+    .first-container {
+        flex-wrap: wrap;
+    }
+    .adjust-width-first {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .adjust-width-second-container {
+        flex-wrap: wrap;
+    }
+    .adjust-width-second,
+    .adjust-width-second-select {
+        width: 91%;
+        padding: 5px 19px 19px 19px;
+    }
+    .serach-header {
+        padding: 15px 0px 15px 30px;
+    }
+    .show-advance {
+        height: 417px;
+    }
+    .flag-img-can,
+    .flag-img-usa {
+        width: 60px;
+        margin-bottom: 15px;
+    }
+}

@@ -1,0 +1,141 @@
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4><a [routerLink]="['/admin/plan-categories']">Plans</a> <span *ngIf="dataStatus=='done'"> >> {{planCategory.title}}</span></h4>
+            <button class="green sm mb-2" (click)="openModal(plan, -1)">Add Plan</button>
+        </div>
+        <div class="table-responsive" *ngIf="dataStatus == 'done'">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <!-- <th>Monthly Download</th> -->
+                        <th>Yearly Downdload</th>
+                        <!-- <th>Monthly Price</th> -->
+                        <th>Yearly Price</th>
+                        <th>Display</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="plansList.length > 0; else noDataFound">
+                    <tr *ngFor="let d of plansList; let i = index">
+                        <td>{{d.title}} </td>
+                        <!-- <td>{{d.monthly_downloads_limit}} </td> -->
+                        <td>{{d.yearly_downloads_limit}} </td>
+                        <!-- <td>$ {{d.monthly_price | commaSeparation}} </td> -->
+                        <td>$ {{d.yearly_price | commaSeparation}} </td>
+                        <td>
+                            <ng-container *ngIf="d.web_display==1">Yes</ng-container>
+                            <ng-container *ngIf="d.web_display==0">No</ng-container>
+                        </td>
+                        <td class=" d-flex justify-content-center">
+                            <div class="image-upload">
+                                <label for="file-input" (click)="openModal(plan,i)">
+                                    <span class="themeCol2"><i class="fa fa-edit"></i></span>
+                                </label>
+                            </div>
+                            <div class="px-3 danger">
+                                <i class="fa fa-trash" (click)="confirmingModal(confirming, d.id,i)"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #noDataFound>
+                    <tbody>
+                        <tr>
+                            <td colspan="10">
+                                <app-no-data-found></app-no-data-found>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #plan>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Manage Plan</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="planForm" (ngSubmit)="save(planForm, f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Title <span class="mendatory">*</span></label>
+                    <input formControlName="title" class="form-control mt-0" placeholder="Enter Title" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.title, f)" class="errors">
+                        <p *ngIf="g.title.errors.required">Title is required</p>
+                        <p *ngIf="g.title.errors.maxlength">Maximum {{ g2.title.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Monthly downloads limit <span class="mendatory">*</span></label>
+                    <input type="number" min="0" [max]="planForm.value.yearly_downloads_limit" formControlName="monthly_downloads_limit" class="form-control mt-0" placeholder="Enter Monthly downloads limit" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.monthly_downloads_limit, f)" class="errors">
+                        <p *ngIf="g.monthly_downloads_limit.errors.required">Monthly downloads limit is required</p>
+                        <p *ngIf="g.monthly_downloads_limit.errors.min">Monthly downloads limit cant be less then 0</p>
+                        <p *ngIf="g.monthly_downloads_limit.errors.max">Monthly downloads limit cant be greater then then Yearly downloads limit</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Yearly downloads limit <span class="mendatory">*</span></label>
+                    <input type="number" [min]="planForm.value.monthly_downloads_limit" formControlName="yearly_downloads_limit" class="form-control mt-0" placeholder="Enter yearly downloads limit" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.yearly_downloads_limit, f)" class="errors">
+                        <p *ngIf="g.yearly_downloads_limit.errors.required">Yearly downloads limit is required</p>
+                        <p *ngIf="g.yearly_downloads_limit.errors.min">Yearly downloads limit cant be less then Monthly downloads limit</p>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Monthly price <span class="mendatory">*</span></label>
+                    <input formControlName="monthly_price" type="number" min="0" [max]="planForm.value.yearly_price" class="form-control mt-0" placeholder="Enter Monthly Price" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.monthly_price, f)" class="errors">
+                        <p *ngIf="g.monthly_price.errors.required">Monthly price limit is required</p>
+                        <p *ngIf="g.monthly_price.errors.min">Monthly price cant be less then 0</p>
+                        <p *ngIf="g.monthly_price.errors.max">Monthly price limit cant be greater then yearly price limit</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Yearly price <span class="mendatory">*</span></label>
+                    <input type="number" [min]="planForm.value.monthly_price" formControlName="yearly_price" class="form-control mt-0" placeholder="Enter Yealy Price" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.yearly_price, f)" class="errors">
+                        <p *ngIf="g.yearly_price.errors.required">Yearly price limit is required</p>
+                        <p *ngIf="g.yearly_price.errors.min">Yearly price limit cant be less then monthly price limit</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label class="mb-0">Display on WebSite <span class="mendatory">*</span></label>
+                    <select formControlName="web_display" class="form-control mt-0" [ngClass]="{'form-submitted': f.submitted}">
+                        <option value="null">Select</option>
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                    <div *ngIf="ui.checkErrors(g.web_display, f)" class="errors">
+                        <p *ngIf="g.web_display.errors.required">It is required</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <button type="submit" class="red sm m-1" [disabled]="saveLoading" [ngClass]="saveLoading?'in-progress':''">save <span></span><span></span><span></span></button>
+            <button type="button" class="black sm ml-1" (click)="cancelRegionButton(f)">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #confirming>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete?</p>
+        <button type="button" class="green sm" (click)="modalRef.hide()">No</button>
+        <button type="button" class="red sm" (click)="delete()" [disabled]="yesLoading" [ngClass]="yesLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>

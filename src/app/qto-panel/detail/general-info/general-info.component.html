@@ -1,0 +1,100 @@
+<div class="row">
+
+    <div class="col-md-3 cell-height">
+            <b>Solicitation:</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.solicitation}}
+        </div>
+        <div class="col-md-3 cell-height">
+            <b>Bid Range</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            ${{p.min_bid}} 
+            <span *ngIf="!p.max_bid">And Above</span>
+            <span *ngIf="p.max_bid">- ${{p.max_bid}}</span>
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Bid Method</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.bid_method}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Location</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.project_location}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Bid Phase</b>
+        </div>
+        <div class="col-md-3 cell-height">
+        {{p.bid_phase}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Bid Date</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{moment(p.bid_date).format(dateFormat)}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Completion Time</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.completion_time}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Bid Location</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.pre_bid_location}} 
+        </div>
+        
+        <div class="col-md-3 cell-height">
+            <b>Liquidated Damages</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.liquidated_damages}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>Notes</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.notes}} 
+        </div>
+        <div class="col-md-3 cell-height">
+            <b>Pre-bid Meeting</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            {{p.pre_bid_location}} 
+        </div>
+
+        <div class="col-md-3 cell-height">
+            <b>CSI Division</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            <ng-container *ngIf="p.project_csi_divisions.length > 0">
+                <div class="row" *ngFor="let j of p.project_csi_divisions">
+                    <div class="col-md-12">
+                        <p>{{j.csi_division.name}} - {{j.csi_division.description}}</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="col-md-3 cell-height">
+            <b>Bonds</b>
+        </div>
+        <div class="col-md-3 cell-height">
+            <p>Bid Bond: {{p.b_bond}}% </p>
+            <p>Perfomance Bond: {{p.p_bond}}% </p>
+            <p>Payment Bond: {{p.pay_bond}}% </p>
+        </div>
+</div>

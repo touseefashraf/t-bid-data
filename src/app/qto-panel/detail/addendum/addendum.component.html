@@ -1,0 +1,30 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Date</th>
+                <th class="col-actions download-all" style="width: 170px">
+                    <i class="fa fa-download" aria-hidden="true"></i>&nbsp;<a *ngIf="addendum.length > 0" class="set-cursor" (click)="downloadFolder()">Grab All Docs</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of addendum">
+                <td>{{s.name}}</td>
+                <td>{{s.file_size}} KB</td>
+                <td>{{moment(s.updated_at).format(dateFormat)}}</td>
+                <td><img src="/assets/images/pdf.png" class="img-width set-cursor" (click)="downloadDocument(s.id,s)"></td>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="addendum.length == 0">
+            <tr>
+                <td colspan="100">
+                    <app-no-data-found></app-no-data-found>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>        

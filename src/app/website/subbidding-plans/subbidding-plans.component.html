@@ -1,0 +1,68 @@
+<div class="top-row mt-5">
+    <div class="row">
+        <div class="col-md-6 "><img src="/assets/images/plans.png" class="first-background"></div>
+        <div class="col-md-6" style="padding: 50px;">
+            <h3>Subbidding Subscription Plans</h3>
+            <p>Flexible plans that grow with you. Fastest and easiest way to grow your business is by hassle free bidding. We'll help you bid smarter from day one.</p>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="dataStatus=='fetching'">
+    <app-loader></app-loader>
+</ng-container>
+
+<ng-container *ngIf="dataStatus=='done'">
+    <div class="d-flex justify-content-center" *ngIf="this.api.user.user_type == 'customer' && checkSubRange == false && susbcriptionError !== ''">
+        <div class="error-container">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle mr-3"></i>
+                <p>{{susbcriptionError}}</p>
+            </div>
+            <div>
+                <i style="cursor: pointer" (click)="susbcriptionError = ''" class="fas fa-times"></i>
+            </div>
+        </div>
+    </div>
+    <div class="body-container">
+
+        <div class="subscription-row" *ngIf="plansList.length>0">
+            <div class="subscription" *ngFor="let p of plansList">
+                <ng-container>
+                    <div [class]="subsRangeData?.subbidding_plan_id == p.id?'price-golden':'price'">
+
+                        <span class="price-label">{{p.title}}</span>
+                        <br>
+                        <span class="price-label">${{p.price}}</span>
+                    </div>
+                </ng-container>
+                <div class="desc">
+                    <div class="item " style="flex-grow: 1;">
+                        <span class="icon-color fa fa-clock-o" aria-hidden="true"></span> Duration
+                    </div>
+                    <div class="item"><b>12Months</b></div>
+                </div>
+                <div class="desc">
+                    <div class="item " style="flex-grow: 1;">
+                        <span class="icon-color fa fa-money " aria-hidden="true"></span> Plan Cost
+                    </div>
+                    <div class="item"><b>${{(p.price/12).toFixed(2)}}/Month</b></div>
+                </div>
+                <div class="desc">
+                    <div class="item " style="flex-grow: 1;"> {{p.description}} </div>
+                </div>
+                <div *ngIf="subsRangeData?.subbidding_plan_id != p.id" class="my-button-firsrt-not">
+                    <button (click)="makeSubscriptionRequest(p.id)" class="button home-explore-btn btn secondary-button-bg">Subscribe
+                        <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- <a *ngIf="userType==''" [routerLink]="['/login']">
+                        <button class="button home-explore-btn btn orange-button-bg">Subscribe
+                            <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                        </button>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<div class="foot"></div>

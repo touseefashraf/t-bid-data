@@ -1,0 +1,22 @@
+<div class="" *ngIf="ds.dataStatus=='done'">
+    <div class="topNav">
+        <div class="topNavItem">Company</div>
+        <div class="topNavItem">Address</div>
+        <div class="topNavItem">Contact Name</div>
+        <div class="topNavItem">Contact #</div>
+    </div>
+    <ng-container *ngIf="ds.projectPlanHolders.length > 0">
+        <ng-container *ngFor="let d of ds.projectPlanHolders">
+            <div class="pageContainer" >
+
+                <div class="pageData">{{d.plan_holder.company_name}}</div>
+                <div class="pageData">{{d.plan_holder.address}}</div>
+                <div class="pageData">{{ d.plan_holder.poc_first_name}}</div>
+                <div class="pageData">{{d.plan_holder.contact_1}}</div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="text-center" *ngIf="ds.projectPlanHolders.length == 0">
+        <h1>No Data Found</h1>
+    </div>
+</div>

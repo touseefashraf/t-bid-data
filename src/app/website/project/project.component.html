@@ -1,0 +1,110 @@
+<div class="full-page" *ngIf="data.dataStatus == 'fetching'">
+
+    <div class="header">
+        <div class="header-part">
+            <div style="width: 100%; margin-bottom: 10px; ">
+                <div class="skeletion" style="height:20px; width: 100px;"></div>
+            </div>
+            <div style="width: 100%;">&nbsp;</div>
+            <div style="width: 100%; margin-bottom: 10px; padding-bottom: 10px !important; ">
+                <div class="skeletion" style="height:20px; width: 300px;"></div>
+            </div>
+            <div style="width: 100%;">&nbsp;</div>
+        </div>
+        <div class="header-part">
+            <div class="w-100">
+                <div class=" d-flex justify-content-center align-items-center mb-2">
+                    <div class="skeletion" style="height:20px; width: 120px; margin-right:10px"></div>
+                    <div class="skeletion" style="height:20px; width: 100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loader-container">
+        <div class="headers-container">
+            <div [class]="'header-item '+data.tabs.details" [routerLink]="['./details']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <div [class]="'header-item '+data.tabs.specs" [routerLink]="['./specs']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <div [class]="'header-item '+data.tabs.plans" [routerLink]="['./plans']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <div [class]="'header-item '+data.tabs.qtyoff" [routerLink]="['./qtyoff']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <div [class]="'header-item '+data.tabs.qtyvid" [routerLink]="['./qtyvid']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <!-- <div [class]="'header-item '+data.tabs.planholders" [routerLink]="['./planholders']" routerLinkActive="router-link-active" >Plan Holder</div> -->
+            <div [class]="'header-item '+data.tabs.addendum" [routerLink]="['./addendum']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+            <div [class]="'header-item '+data.tabs.others" [routerLink]="['./others']" routerLinkActive="router-link-active">
+                <div class="skeletion" style="height:25px; width: 200px;"></div>
+            </div>
+        </div>
+        <div class="details-container text-center">
+            <img src="/assets/img/loading.gif" style="width: 70px; margin-top: 5%;">
+        </div>
+    </div>
+
+</div>
+<div class="full-page" *ngIf="data.dataStatus == 'done'">
+    <div class="header">
+        <div class="header-part">
+            <h3 class="d-flex">
+                <span class="projectTitle">{{data.projectDetails.title}} <span class="update-svg-section">
+                        <img class="mark-svgs new-svg" *ngIf="data.projectDetails.mark_as_new == 1 && moment(data.projectDetails.created_at).format('YYYY-MM-DD')==moment().format('YYYY-MM-DD')" src="/assets/images/New-tbd.svg" alt="">
+                        <img class="mark-svgs update-svg" *ngIf="data.projectDetails.mark_as_update == 1" src="/assets/images/Update-tbd.svg" alt="">
+                        <div class="update">{{data.projectDetails.update_description}}</div>
+                    </span></span>
+
+            </h3>
+            <p><i class="fas fa-map-marker-alt address"></i>{{data.projectDetails.project_location}} <span>|</span> <i class="fas fa-user user"></i><span *ngIf="data.projectDetails.project_owner!=null">{{data.projectDetails.project_owner.org_name}}</span></p>
+        </div>
+        <div class="header-part-btm">
+
+            <div class=" d-flex justify-content-end align-items-center mb-2" *ngIf="data.dataStatus=='done'">
+                <button *ngIf="data.printable" type="button" class="print-button" (click)="printPage()"><span>Print.</span><span><i class="fas fa-print"></i></span></button>
+
+                <!-- <button [routerLink]="['./qtyoff']" routerLinkActive="router-link-active" type="button" class="qto-button ml-2"><span>Sub-Bid</span><span><i class="fas fa-file-contract"></i></span></button> -->
+                <!-- <button *ngIf="userType == 'customer'" (click)="ifSubscribedToSubbding()" routerLinkActive="router-link-active" type="button" class="qto-button ml-2"><span>Sub-Bid</span><span><i class="fas fa-file-contract"></i></span></button> -->
+                <button *ngIf="userType == 'customer' && subBid == null" (click)="ifSubscribedToSubbdingMakeRFQ()" routerLinkActive="router-link-active" type="button" class="qto-button ml-2"><span>Sub-Bid</span><span><i class="fas fa-file-contract"></i></span></button>
+                <!-- <button *ngIf="userType == 'customer' && subBid > 0" (click)="ifSubscribedToSubbding()" routerLinkActive="router-link-active" style="width: 160px;" type="button" class="qto-button ml-2"><span>View AT Sub-Bid</span><span><i class="fas fa-file-contract"></i></span></button> -->
+
+            </div>
+
+        </div>
+    </div>
+    <div class="project-container">
+        <div *ngIf="countStatus=='fetching'" class="headers-container">
+            <div [class]="'header-item '+data.tabs.details" [routerLink]="['./details']" routerLinkActive="router-link-active">Project Details</div>
+            <div [class]="'header-item '+data.tabs.specs" [routerLink]="['./specs']" routerLinkActive="router-link-active">Specs ( -- )</div>
+            <div [class]="'header-item '+data.tabs.plans" [routerLink]="['./plans']" routerLinkActive="router-link-active">Plans ( -- )</div>
+            <div [class]="'header-item '+data.tabs.qtyoff" [routerLink]="['./qtyoff']" routerLinkActive="router-link-active">Quantity Takeoffs ( -- )</div>
+            <div [class]="'header-item '+data.tabs.qtyvid" [routerLink]="['./qtyvid']" routerLinkActive="router-link-active">Quantity Takeoff Video</div>
+            <!-- <div [class]="'header-item '+data.tabs.planholders" [routerLink]="['./planholders']" routerLinkActive="router-link-active" >Plan Holder</div> -->
+            <div [class]="'header-item '+data.tabs.addendum" [routerLink]="['./addendum']" routerLinkActive="router-link-active">Addendum ( -- )</div>
+            <div [class]="'header-item '+data.tabs.others" [routerLink]="['./others']" routerLinkActive="router-link-active">Others ( -- )</div>
+        </div>
+        <div *ngIf="countStatus=='done'" class="headers-container">
+            <div [class]="'header-item '+data.tabs.details" [routerLink]="['./details']" routerLinkActive="router-link-active">Project Details</div>
+            <div [class]="'header-item '+data.tabs.specs" [routerLink]="['./specs']" routerLinkActive="router-link-active">Specs ( {{count.specs_count}} )</div>
+            <div [class]="'header-item '+data.tabs.plans" [routerLink]="['./plans']" routerLinkActive="router-link-active">Plans ( {{count.plan_count}} )</div>
+            <div [class]="'header-item '+data.tabs.qtyoff" [routerLink]="['./qtyoff']" routerLinkActive="router-link-active">Quantity Takeoffs ( {{count.qto_count}} )</div>
+            <div [class]="'header-item '+data.tabs.qtyvid" [routerLink]="['./qtyvid']" routerLinkActive="router-link-active">Quantity Takeoff Video</div>
+            <!-- <div [class]="'header-item '+data.tabs.planholders" [routerLink]="['./planholders']" routerLinkActive="router-link-active" >Plan Holder</div> -->
+            <div [class]="'header-item '+data.tabs.addendum" [routerLink]="['./addendum']" routerLinkActive="router-link-active">Addendum ({{count.addendum_count}})</div>
+            <div [class]="'header-item '+data.tabs.others" [routerLink]="['./others']" routerLinkActive="router-link-active">Others ({{count.other_count}})</div>
+        </div>
+        <div class="details-container">
+            <!-- <ng-container *ngIf="data.projectDetails.title!=null">
+            <img  src="/assets/img/loading.gif" style="width: 70px; margin-top: 5%;">
+            </ng-container> -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <!-- <app-specs style="display: none;" (newItemEvent)="printPageValue($event)"></app-specs> -->
+</div>

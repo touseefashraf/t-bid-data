@@ -1,0 +1,17 @@
+.themeCol2 {
+    color: orange;
+    cursor: pointer;
+  }
+
+  .themeCol3 {
+    color: blue
+  }
+
+  .danger {
+    color: red;
+    cursor: pointer;
+
+  }
+  .text-setting {
+    word-break: break-word;
+}

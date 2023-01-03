@@ -1,0 +1,69 @@
+<div class="heading">
+    <h3>Wish List:</h3>
+</div>
+<div class="card-holder">
+    <ng-container *ngIf="!fetching">
+        <div class="card card-colored" *ngFor="let d of favProjectList;let i = index">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>{{d.project.title}}</h2>
+                    <p class="des">{{d.project.description}}</p>
+                    <p class="location">
+                        <i class="fa fa-map-marker address-icon"></i>
+                        <span>{{d.project.project_location}}</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-right bid-details">
+                    <p class="mt-2"><b>Bid Amount: $</b><span>{{d.project.bid_amount}}</span></p>
+                    <p class="mt-2"><b>Bid Date:</b><span>{{moment(d.bidDate).format('MMM DD, YYYY')}}</span></p>
+                    <div class="d-flex justify-content-end align-items-center mt-4">
+                        <button [routerLink]="['/project-details/'+d.project_id+'/details']" routerLinkActive="router-link-active" class="primary">
+                            <span>Detail</span>
+                        </button>
+                        <button class="orange ml-2" (click)="openRemoveModal(removeConfirmingTemplate,d.project_id,i)">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" *ngIf="!fetching && favProjectList.length > 0">
+            <ul class="pagination justify-content-center  mt-3">
+                <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+                </li>
+
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+
+                <li class="page-item" *ngIf="pagination.next_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <div *ngIf="!fetching && favProjectList.length == 0" class="text-center">
+            <app-no-data-found></app-no-data-found>
+        </div>
+    </ng-container>
+    <div class="loader-row"  *ngIf="fetching">
+        <img src="/assets/img/loading.gif" class="data-loader">
+    </div>
+</div>
+
+
+<ng-template #removeConfirmingTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to remove project from wishlist?</p>
+        <button [disabled]="updateLoading" [ngClass]="updateLoading?'in-progress':''" type="button" class="secondary mr-1" (click)="removeFav()">Yes
+            <span></span><span></span><span></span>
+        </button>
+        <button type="button" class="orange" (click)="modalRef.hide()">No</button>
+    </div>
+</ng-template>

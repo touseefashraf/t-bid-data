@@ -1,0 +1,143 @@
+<div class="container-fluid">
+    <h4>Customer</h4>
+
+    <div class="row mb-3">
+        <div class="col">
+            <label>Name</label>
+            <input (keyup.enter)="page = 1;search()" type="text" class="form-control" [(ngModel)]="name" placeholder="Enter Name">
+        </div>
+
+        <div class="col col d-flex align-items-end">
+            <label>&nbsp;</label>
+            <div class="btn-group" dropdown>
+                <button [disabled]="waiting.search" [ngClass]="waiting.search? 'in-progress' : ''" type="button" class="lg green" (click)="page = 1;search()">Search
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th width="200">Address</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <ng-container *ngIf="dataStatus == 'fetching'">
+                <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+            </ng-container>
+
+            <ng-container *ngIf="dataStatus == 'done'">
+
+                <tbody *ngIf="data.length > 0; else noDataFound">
+                    <tr *ngFor="let d of data; let i = index">
+                        <td>{{d.email}}</td>
+                        <td>{{d.customer.first_name}} {{d.customer.last_name}}</td>
+                        <td>
+                            <span *ngIf="d.customer.contact_1"><b>Primary:</b> {{d.customer.contact_1}}</span>
+                            <span *ngIf="d.customer.contact_2"><br><b>Secondary:</b> {{d.customer.contact_2}}</span>
+                        </td>
+                        <td>{{d.customer.address}}</td>
+                        <td class="d-flex justify-content-center align-items-center">
+                            <div class="image-upload">
+                                <button [disabled]="waiting.customerStatus[i]" [ngClass]="{'in-progress': waiting.customerStatus[i]}" *ngIf="d.status == 'active'" button class="sm red" (click)="inactiveUser(d.id, i)">Inactive
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                                <button [disabled]="waiting.customerStatus[i]" [ngClass]="{'in-progress': waiting.customerStatus[i]}" *ngIf="d.status == 'inactive'" button class="sm green" (click)="activeUser(d.id,i)">Active
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                            </div>
+
+                            <div class="px-2 danger">
+                                <i class="fa fa-trash" (click)="confirmingModal(deleteUserModal, d.id,i)"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #noDataFound>
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                <app-no-data-found></app-no-data-found>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+            </ng-container>
+
+        </table>
+
+
+        <nav aria-label="Page navigation example" *ngIf="dataStatus == 'done'">
+            <ul class="pagination justify-content-left  mt-3">
+                <li class="page-item">
+                    <small *ngIf="page<10">Current Page: 0{{page}}</small>
+                    <small *ngIf="page>=10">Current Page: {{page}}</small>
+                </li>
+            </ul>
+            <ul class="pagination justify-content-left">
+                <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+                </li>
+                <ng-container *ngIf="pagination.last_page <= 6">
+
+                    <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                        <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                    </ng-container>
+
+                </ng-container>
+
+                <ng-container *ngIf="pagination.last_page >= 7">
+
+                    <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                        <li *ngIf="i<4" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                        <li *ngIf="(pagination.last_page-i) == 3" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link">...</a>
+                        </li>
+                        <li *ngIf="(pagination.last_page-i)==1 || (pagination.last_page-i)==2" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                            <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                        </li>
+                    </ng-container>
+
+                </ng-container>
+
+                <li class="page-item" *ngIf="pagination.next_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<ng-template #deleteUserModal>
+    <div class="modal-body text-center">
+        <p>Do you want to delete customer?</p>
+        <button type="button" class="sm green" (click)="modalRef.hide()">No</button>
+        <button [disabled]="waiting.loading" [ngClass]="waiting.loading? 'in-progress' : ''" type="button" class="sm red" (click)="delete()">Yes
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</ng-template>

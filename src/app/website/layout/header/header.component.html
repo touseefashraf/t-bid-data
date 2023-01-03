@@ -1,0 +1,80 @@
+<header>
+    <div class="top-header">
+
+        <div class="container-fluid">
+
+            <div class="row">
+
+                <div class="col-sm-6 text-left no-padding">
+                    <div class="linksContainer">
+                        <a class="headerLinks" href="" [routerLink]="['/quote-request']" routerLinkActive="active"> Get your free Quantity TakeOff quote now!</a>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-right no-padding">
+
+                    <div class="linksContainer">
+                        <a class="headerLinks" [routerLink]="['/cart']" id="cart">
+                            <i class="fa fa-shopping-cart" [ngClass]="{'active-cart': +cart > 0}"></i> Cart <span class="badge">{{cart}}</span>
+                        </a>
+                        <a class="headerLinks" href="tel:1-718-717-2601">
+                            <i class="fas fa-phone-alt"></i>
+                            (718)-717-2601
+                        </a>
+                        <a class="headerLinks" href="mailto:support@truebiddata.com">
+                            <i class="fa fa-envelope"></i>
+
+                        </a>
+                        <a class="headerLinks" *ngIf="!isAuthenticated" [routerLink]="['/login']"><i class="fa fa-lock"></i> Login</a>
+                        <a class="headerLinks" *ngIf="isAuthenticated" href="javascript:void(0)" (click)="logOut()"><i class="fa fa-lock"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-xl" style="background-color: #fff;">
+            <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="active"><img src="/assets/images/TBD-full-color-logo.png" class="logo" alt="img"></a>
+            <button [ngClass]="!isCollapsed? 'cross' : ''" class="navbar-toggler collapsed" (click)="setCollapsed()" type="button" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="toggler-icon"></span>
+                <span class="toggler-icon"></span>
+                <span class="toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault" [collapse]="isCollapsed" [isAnimated]="true">
+                <ul class="navbar-nav  ml-auto">
+                    <li class="nav-item nav-main d-flex">
+                        <form (ngSubmit)="redirectToSearch()">
+                            <input type="text" class="input-search" [(ngModel)]="filters.title" placeholder="Search Projects" name="search">
+                            <button type="submit"  class="search-btn"><i class="fa fa-search mirror-color"></i></button>
+                        </form>
+                    </li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'usTenders'}"><a href="" [routerLink]="['/search']" [queryParams]="{country:'USA',page:1, period_type:'new'}" routerLinkActive="active" (click)="isCollapsed=true">US Projects</a></li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'canadaTenders'}"><a href="" [routerLink]="['/search']" [queryParams]="{country:'Canada',page:1, period_type:'new'}" (click)="isCollapsed=true">Canada Projects</a></li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'sampleProjects'}"><a href="" [routerLink]="['/sample-projects/details']" routerLinkActive="active" (click)="isCollapsed=true">Sample Project</a></li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'plans'}"><a href="" [routerLink]="['/plans']" routerLinkActive="active" (click)="isCollapsed=true">Plans</a></li>
+                    <!-- <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'coverageArea'}"><a href="" [routerLink]="['/coverage-area']" routerLinkActive="active">Coverage Area</a></li> -->
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'e-subbidding'}"><a href="" [routerLink]="['/e-subbidding']" routerLinkActive="active" (click)="isCollapsed=true">Sub-Bidding</a></li>
+                    <!-- <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'discounts'}"><a href="" [routerLink]="['/discounts']" routerLinkActive="active">Discounts</a></li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'whyUs'}"><a href="" [routerLink]="['/why-us']" routerLinkActive="active">Why Us</a></li>
+                    <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'contactUs'}"><a href="" [routerLink]="['/contact-us']" routerLinkActive="active">Contact us</a></li> -->
+                    <div dropdownToggle class="btn-group user-dropdown btn-sm dropdown-main pointer" dropdown>
+                        <p class="dropdown-toggle" style="color:#000000">More</p>
+                        <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-animated">
+                            <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'discounts'}"><a [routerLink]="['/discounts']" (click)="isCollapsed=true">Discounts</a></li>
+                            <li class="nav-item" [ngClass]="{'active-tab': api.activeTab == 'whyUs'}"><a [routerLink]="['/why-us']" (click)="isCollapsed=true">Why Us</a></li>
+                            <li class="nav-item" style="border-radius: 0px 0px 3px 3px;" [ngClass]="{'active-tab': api.activeTab == 'contactUs'}"><a [routerLink]="['/contact-us']" (click)="isCollapsed=true">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <li class="nav-item register" *ngIf="!isAuthenticated">
+                        <a href="" [routerLink]="['/registration']"><button class="button home-explore-btn btn blue-button-bg" (click)="isCollapsed=true">Register</button></a>
+                    </li>
+                    <li class="nav-item my-portal" *ngIf="isQto"><a class="button" [routerLink]="['/qto/dashboard']"><button class="button home-explore-btn btn blue-button-bg" (click)="isCollapsed=true">Portal</button></a></li>
+                    <li class="nav-item my-portal" *ngIf="isDeo"><a class="button" [routerLink]="['/deo/dashboard']"><button class="button home-explore-btn btn blue-button-bg" (click)="isCollapsed=true">Portal</button></a></li>
+                    <li class="nav-item my-portal" *ngIf="isCustomer"><a class="button" [routerLink]="['/customer/profile']"><button class="button home-explore-btn btn blue-button-bg" (click)="isCollapsed=true">Portal</button></a></li>
+                    <li class="nav-item my-portal" *ngIf="isAdmin"><a class="button" [routerLink]="['/admin/dashboard']"><button class="button home-explore-btn btn blue-button-bg" (click)="isCollapsed=true">Portal</button></a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>

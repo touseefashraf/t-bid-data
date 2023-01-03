@@ -1,0 +1,109 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 no-padding">
+            <div style="margin-bottom: 20px;" class="line-down ">
+                <i class="fa fa-shopping-cart"></i>
+                <span class="sec-heading">My </span><span class="head-bold">Cart</span>
+                <div style="width: 10%" class="green-border">&nbsp;</div>
+            </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="!cartData">
+            <div style="text-align: center;" class="">Your cart is empty, lets Purchase some Files</div>
+        </div>
+
+
+
+        <div class="col-md-12 cart" *ngIf="cartData != null ">
+            <div class="row">
+                <div class="cartHeader">
+                    <div class="cartHeading cartHeadin1"> Project Files</div>
+                    <div class="cartHeading">Price </div>
+                    <div class="cartHeading">Action</div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="cartItemsContainer" *ngFor="let d of cartData.documents;let i = index">
+                    <div class="cartItems cartItem1">
+                        <img class="docs-image" src="assets/images/excel.png">
+                        <h5 class="titleColor">{{d.name}}</h5>
+                        <p class="pdColor">Project: {{d.project_title}}</p>
+                    </div>
+                    <div class="cartItems">${{d.price}}</div>
+                    <div class="cartItems text-center" (click)="deleteItem(d,i)"><i class="fa fa-trash delete-from-cart"></i></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row checkOut" *ngIf="cartData != null">
+        <div class="col-md-6 col-sm-12 couponBox">
+            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold cbtn">Coupon code</div>
+            <div class="p-4">
+                <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+                <!-- <div style="border: 1px solid; border-radius:3px;width: 100% ;height:50px ;">
+
+                </div> -->
+                <div class="input-group mb-4 border rounded-pill p-2">
+                    <input type="text" [(ngModel)]='coupon' placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control inputBox">
+
+                    <!-- <div class="input-group-append border-0" *ngIf="!btnDisabled"> -->
+                    <div class="input-group-append border-0">
+                        <button (click)="submitCoupon()" class="btn apply-coupon btn themeColor px-4 rounded-pill" [disabled]="btnDisabled" [ngClass]="{'in-progress': btnDisabled}">
+                            <i class="fa fa-gift mr-2"></i>Apply coupon
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <p class="font-italic mb-4 coupon-msg-alert text-center hide"></p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+            <div class="p-4">
+                <p class="font-italic mb-4">You will be redirected to PayPal to complete purchase.</p>
+                <ul class="list-unstyled mb-4">
+                    <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>${{subTotal}}</strong></li>
+                    <li class="d-flex justify-content-between py-3 border-bottom">
+                        <strong class="text-muted">Discount</strong><strong>$<span class="discount-coupon">{{discount}}</span></strong>
+                    </li>
+                    <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                        <h5 class="font-weight-bold">$<span class="totalPrice">{{tPrice}}</span></h5>
+                    </li>
+                </ul>
+                <div class="row">
+                    <div *ngIf="cartData.documents.length > 0 && tPrice !== 0" class="col-md-8" style="margin-top: 15px;">
+                        <button type="submit" (click)="checkOut()" class="btn themeColor rounded-pill py-2 btn-block" [disabled]="waiting.checkout" [ngClass]="{'in-progress': waiting.checkout}">
+                            <i class="fa fa-shopping-cart cart-icon mr-1"></i>
+                            <ng-container *ngIf="api.user.user_type == ''">Guest</ng-container> Checkout
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+                    <div *ngIf="cartData.documents.length > 0 && tPrice == 0" class="col-md-8" style="margin-top: 15px;">
+                        <button type="submit" (click)="checkOut()" class="btn themeColor rounded-pill py-2 btn-block" [disabled]="waiting.checkout" [ngClass]="{'in-progress': waiting.checkout}">
+                            Download
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+                    <div *ngIf="api.user.user_type == ''" class="col-md-4" style="margin-top: 15px;">
+                        <a [routerLink]="['/login']" routerLinkActive="router-link-active" class="cart-login-btn btn btn-blue rounded-pill py-2 btn-block">
+                            <i class="fa fa-lock"></i>
+                            Login
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

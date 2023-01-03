@@ -1,0 +1,123 @@
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-2">
+        <div class="d-flex justify-content-between">
+            <h4>Quote Requests</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th>Contact No.</th>
+                        <th>Email</th>
+                        <th>No. of Drawings</th>
+                        <th>Target No.</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+                <ng-container  *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="quoteRequestList.length > 0; else noDataFound">
+                        <tr *ngFor="let d of quoteRequestList; let i = index">
+                            <td>
+                                {{d.name}}  
+                            </td>
+                            <td>
+                                {{d.company}}
+                            </td>
+                            <td>{{d.contact}} </td>
+                            <td>
+                            {{d.email}}
+                            </td>
+                            <td>{{d.no_drawings}}</td>
+                            <td>{{d.target_days}}</td>
+                            <td class=" d-flex justify-content-center align-items-center">
+                                <div class="image-upload">
+                                    <label class="m-0" for="file-input">
+                                        <button button type="button" class="sm green" [routerLink]="['/admin/quote',d.id]" routerLinkActive="router-link-active" >View</button>
+                                        <!-- <span class="themeCol2"><i [routerLink]="['/admin/quote',d.id]" routerLinkActive="router-link-active"  class="fa fa-eye"></i></span> -->
+                                    </label>
+                                </div>
+                                <div class="px-2 danger">
+                                    <i class="fa fa-trash" (click)="confirmingModal(confirming, d.id,i)"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="7">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+            </ng-container>
+            </table>
+            <nav aria-label="Page navigation example" *ngIf="dataStatus == 'done'">
+                <ul class="pagination justify-content-left  mt-3">
+                    <li class="page-item">
+                        <small *ngIf="page<10">Current Page: 0{{page}}</small>
+                        <small *ngIf="page>=10">Current Page: {{page}}</small>
+                    </li>
+                </ul>
+                <ul class="pagination justify-content-left">
+                    <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                        <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+                    </li>
+                    <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                        <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+                    </li>
+                    <ng-container *ngIf="pagination.last_page <= 6">
+      
+                        <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                            <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                                <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                            </li>
+                        </ng-container>
+      
+                    </ng-container>
+      
+                    <ng-container *ngIf="pagination.last_page >= 7">
+      
+                        <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                            <li *ngIf="i<4" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                                <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                            </li>
+                            <li *ngIf="(pagination.last_page-i) == 3" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                                <a class="page-link">...</a>
+                            </li>
+                            <li *ngIf="(pagination.last_page-i)==1 || (pagination.last_page-i)==2" [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                                <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                            </li>
+                        </ng-container>
+      
+                    </ng-container>
+      
+                    <li class="page-item" *ngIf="pagination.next_page_url != null">
+                        <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+                    </li>
+                    <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                        <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirming>
+    <div class="modal-body text-center">
+        <p>Do you want to delete quote request?</p>
+        <button type="button" class="green sm" (click)="modalRef.hide()">No</button>
+        <button type="button" class="red sm mr-1" (click)="delete()" [disabled]="waiting.delete" [ngClass]="{'in-progress': waiting.delete}">Yes
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</ng-template>

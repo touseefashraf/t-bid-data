@@ -1,0 +1,276 @@
+<!-- CREATION START -->
+<section class="creation" *ngIf="data">
+    <div class="creation-group">
+        <fieldset class="open-solicitation">
+            <legend class="open-solicitation-legend">Open Solicitation</legend>
+            <div class="social-item" [routerLink]="['/search']" [queryParams]="{page:1,qto_projects:'yes',project_status:'open'}">
+                <div class="creation-image"><img class="clip" src="/assets/images/clipboard.png"></div>
+                <h2>{{data.qto_projects}}</h2>
+                <p>QTO Available</p>
+            </div>
+            <div class="social-item" [routerLink]="['/search']" [queryParams]="{page:1,qto_projects:'no',project_status:'open'}">
+                <div class="creation-image"><img class="result" src="/assets/images/clipboard.png"></div>
+                <h2>{{data.non_qto_projects}}</h2>
+                <p>QTO In-Progress</p>
+            </div>
+        </fieldset>
+        <div class="creation-item" [routerLink]="['/search']" [queryParams]="{page:1,project_status:'bid_results',period_type:'old'}">
+            <div class="creation-image"><img class="result" src="/assets/images/result.png"></div>
+            <h2>{{data.bid_results_projects}}</h2>
+            <p>Bid Results</p>
+        </div>
+        <div class="creation-item" [routerLink]="['/customer/private-projects']" [queryParams]="{page:1}" routerLinkActive="router-link-active">
+            <div class="creation-image"><img class="result" src="/assets/images/result.png"></div>
+            <h2>{{data.private_projects}}</h2>
+            <p>Private Projects</p>
+        </div>
+        <div class="creation-item" [routerLink]="['/search']" [queryParams]="{page:1,project_status:'awarded',period_type:'old'}">
+            <div class="creation-image"><img class="chart" src="/assets/images/bar-chart.png"></div>
+            <h2>{{data.awarded_projects}}</h2>
+            <p>Awarded</p>
+        </div>
+    </div>
+</section>
+<!-- CREATION END -->
+<!-- <p>Index Component</p> -->
+<div class="intro-video ameoba-right-top ameoba-right-pattern">
+    <div class="container">
+        <div class="row bottom-top-padding">
+            <div class="col-md-6">
+                <div class="my-image-first">
+                    <img (click)="openModal(youtube, -1)" class="img-responsive" src="/assets/images/welcome-tbd.png">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="margin top-heading"> Fastest and Easiest
+                    <span class="my-size">way to Bid</span>
+                </h2>
+
+                <div class="heading-points">
+                    <h4 class=""><i class="fa fa-check" aria-hidden="true"></i>
+                        Complete Takeoff by Division
+                        <!-- <span style="color: #084887;">(Subcontractors)</span> -->
+                    </h4>
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        MEP Takeoff</h4>
+
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        Takeoff on Demand (Private Projects)</h4>
+
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        Takeoff Subscription Plans</h4>
+
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        Project Leads, Plans and Specs</h4>
+
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        Shop Drawings</h4>
+
+                    <h4><i class="fa fa-check" aria-hidden="true"></i>
+                        Sub-Bid Your Project We Will Do the Takeoff</h4>
+
+                    <div class="parent-free">
+                        <div class="rotate-free">
+                            <span class=""><img style="width:85%;" src="/assets/images/Free-Tag1.png"></span>
+                        </div>
+                    </div>
+
+                    <div class="my-button-firsrt">
+                        <div class="white-text">
+                            <a (click)="exploreLoading=true" [routerLink]="['/search']" [queryParams]="{period_type: 'new'}">
+                                <button class=" button home-explore-btn btn blue-button-bg" [disabled]="exploreLoading" [ngClass]="exploreLoading?'in-progress':''">Explore More
+                                    <i class="fa fa-arrow-right button-arrow"></i>
+                                    <span></span><span></span><span></span>
+                                </button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Quantity Takeoffs Start -->
+<section class="services">
+    <div class="services-container">
+        <h1>Get <strong>Quantity Takeoffs</strong></h1>
+        <hr class="line" />
+        <div class="services-images">
+
+            <div class="service-img">
+                <div class="search-book">
+                    <img src="/assets/images/search-graphic.png">
+                </div>
+                <div class="qto-home">
+                    <h2>Buy Project TakeOff</h2>
+                </div>
+                <div class="no-sub">
+                    <h4>No Subscription Required</h4>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn blue-button-bg" [routerLink]="['/search']" routerLinkActive="router-link-active" (click)="buyLoading=true" [disabled]="buyLoading" [ngClass]="buyLoading?'in-progress':''">Buy Takeoff
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                            <span></span><span></span><span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-img" style="background-color:#084887">
+                <div class="after-searching">
+                    <h3>Recommended</h3>
+                </div>
+                <div class="decide-book">
+                    <img src="/assets/images/decide-graphic.png">
+                </div>
+                <div class="decide-home">
+                    <h4>Check Out Our Convenient</h4>
+                </div>
+                <div class="decide-sub">
+                    <h4>Subscription Plans</h4>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn golden-button-bg" [routerLink]="['/plans']" routerLinkActive="router-link-active" (click)="subscriptionLoading=true" [disabled]="subscriptionLoading" [ngClass]="subscriptionLoading?'in-progress':''">Subscription Plans
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                            <span></span><span></span><span></span>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-img">
+                <div class="after-searching">
+                    <h3 style="color: rgb(43, 43, 43);margin-bottom: 30px;">TakeOff On Demand
+                        <span style="color: #084887;">(TOD)</span>
+                    </h3>
+                </div>
+                <div class="take-off-book">
+                    <img src="/assets/images/take-off-demand.png">
+                </div>
+                <div class="qto-home">
+                    <h5 style="padding-top: 33px; color:#555">
+                        Submit Your Plans &amp; Specs to Get</h5>
+                    <h5 style="text-align: center;"><b> Free</b> Quote Today</h5>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn blue-button-bg" [routerLink]="['/quote-request']" routerLinkActive="router-link-active" (click)="getQuoteLoading=true" [disabled]="getQuoteLoading" [ngClass]="getQuoteLoading?'in-progress':''">Get Quote
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                            <span></span><span></span><span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<ng-template #youtube>
+    <div class="modal-header pull-right" style="background:#CCCBCB; border-top: solid 5px #084887">
+        <div class="w-100">
+            <div class="col-md-12 text-right">
+                <i class="fas fa-window-close" (click)="cancel()"></i>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <iframe width="100%" class="youtube" src="https://www.youtube.com/embed/-phmMgFyGu0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="modal-footer">
+        <div class="w-100">
+            <div class="col-md-12 text-right">
+                <button type="button" class="primary" (click)="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- Quantity Takeoffs END -->
+
+<!-- List Yourself With Us START -->
+<!-- <section class="list-services ameoba-right-pattern-r">
+    <div class="services-container">
+        <h1><strong>List Yourself </strong>With Us</h1>
+        <hr class="line" />
+
+        <div class="services-images">
+            <div class="listing-items">
+                <div class="qto-home">
+                    <h2 style="color: #fff;">General <br>
+                        <span>Contractor</span> <br>
+                        <span style="font-weight: normal">Listing</span>
+                    </h2>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn orange-button-bg">Enlist
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="listing-items">
+                <div class="qto-home">
+                    <h2 style="color: #fff;">SubContractor <br>
+                        <span style="font-weight: normal">Listing</span>
+                    </h2>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn orange-button-bg">Enlist
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="listing-items">
+                <div class="qto-home">
+                    <h2 style="color: #fff;">Trade <br>
+                        <span>Contractor</span> <br>
+                        <span style="font-weight: normal">Listing</span>
+                    </h2>
+                </div>
+                <div class="my-button-firsrt">
+                    <div class="white-text">
+                        <button class="button home-explore-btn btn orange-button-bg">Enlist
+                            <i class="fa fa-arrow-right button-arrow"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section> -->
+<!-- List Yourself With Us END -->
+
+<section class="company-image-wrapper" *ngIf="companyImagesData.length > 0">
+    <div data-aos="fade-left" class="company-images-container" id="images-container">
+        <div data-aos="fade-left" class="company-image" [id]="'cImage'+i" *ngFor="let d of companyImagesData;let i = index">
+            <a target="_blank" [href]="d.link"><img [src]="api.companyImageUrl(d.id)" alt=""></a>
+        </div>
+    </div>
+</section>
+<!-- <ui-carousel
+  slides="ctrl.slides"
+  slides-to-show="3"
+  slides-to-scroll="1"
+  initial-slide="1"
+  autoplay="true"
+  autoplay-speed="2000"
+  dots="true">
+
+  <carousel-item>
+    <h3>{{  1 }}</h3>
+  </carousel-item>
+</ui-carousel> -->

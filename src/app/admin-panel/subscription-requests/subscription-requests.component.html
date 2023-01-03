@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <h4>Subscription Requests</h4>
+
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Status</label>
+            <select [(ngModel)]="approvalStatus.status">
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+        <div>
+            <button (click)="getList()" class="green sm mt-4" [disabled]="searchLoading" [ngClass]="searchLoading?'in-progress':''">Search <span></span><span></span><span></span></button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Plan</th>
+                    <th>Price</th>
+                    <th>Download Limit</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <ng-container *ngIf="dataStatus == 'fetching'">
+                <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+            </ng-container>
+            <tbody *ngIf="requestList.length > 0 && dataStatus == 'done'">
+                <ng-container *ngFor="let d of requestList; let i = index">
+
+                    <tr *ngIf="d.approval_status!='approved'">
+                        <td>{{d.user.customer.first_name+' '+d.user.customer.last_name}}</td>
+                        <td>{{d.user.email}}</td>
+                        <td>{{d.plan.title}} </td>
+                        <td>$ {{d.price | commaSeparation}}</td>
+                        <td>{{d.downloads_limit}} </td>
+                        <td>{{moment(d.start_date).format(dateFormat)}} </td>
+                        <td>{{moment(d.end_date).format(dateFormat)}} </td>
+                        <td>{{d.approval_status | uppercase}} </td>
+                        <td class=" d-flex justify-content-center">
+                            <div class="d-flex">
+                                <button *ngIf="d.approval_status == 'pending'" class="green sm" (click)="approveRequestConfirmation(approveTemplate,d.id,i)">Approve</button>
+                                <button *ngIf="d.approval_status == 'pending'" class="red sm" (click)="rejectRequestConfirmation(rejectTemplate,d.id,i)">Reject</button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+            <tbody *ngIf="dataStatus == 'done' && requestList.length == 0">
+                <tr>
+                    <td colspan="12">
+                        <app-no-data-found></app-no-data-found>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<ng-template #approveTemplate>
+    <div class="modal-body text-center">
+        <label>Payment Type:</label>
+        <select [(ngModel)]="paymentType" class="mb-2">
+            <option value="cheque">Cheque</option>
+            <option value="cash">Cash</option>
+        </select>
+        <button type="button" class="sm green" (click)="modalRef.hide()">Cancel</button>
+        <button type="button" class="sm red" (click)="acceptRequest()" [disabled]="acceptLoading" [ngClass]="acceptLoading?'in-progress':''">Approve <span></span><span></span><span></span></button>
+    </div>
+</ng-template>
+
+<ng-template #rejectTemplate>
+    <div class="modal-body text-center">
+        <p>Are you sure to reject?</p>
+        <button type="button" class="sm green" (click)="modalRef.hide()">No</button>
+        <button type="button" class="sm red" (click)="rejectRequest()" [disabled]="rejectLoading" [ngClass]="rejectLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>

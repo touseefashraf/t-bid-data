@@ -1,0 +1,37 @@
+<div class="signin-container">
+    <div class="signin-box">
+        <div class="logo-container">
+            <img class="logo" src="assets/images/TBD-full-color-logo.png" alt="">
+        </div>
+        <div class="button-container">
+            <button class="facebook-btn" (click)="facebookLogin()"><i class="fa fa-facebook fa-fw"></i> Login with Facebook</button>
+            <button class="google-btn" (click)="googleLogin()"><i class="fa fa-google fa-fw"></i> Login with Google</button>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="login(loginForm)" #f="ngForm">
+            <div class="row input-container">
+                <div class="col-md-12 form-inputs">
+                    <input type="text" formControlName="email" class="email" placeholder="Enter Email" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.email, f)" class="errors">
+                        <p *ngIf="g.email.errors.required">Email is required</p>
+                        <p *ngIf="g.email.errors.email">Please enter valid email</p>
+                    </div>
+                </div>
+                <div class="col-md-12 form-inputs">
+                    <input type="password" formControlName="password" class="password" placeholder="Enter Password" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.password, f)" class="errors">
+                        <p *ngIf="g.password.errors.required">Password is required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="login-btn-container text-center">
+                <button [disabled]="loginLoading" class="primary" [ngClass]="loginLoading?'in-progress':''">Login
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </form>
+        <div class="footer-container">
+            <a [routerLink]="['/registration']" routerLinkActive="router-link-active" class="create-account">Create an account</a>
+            <a [routerLink]="['/forgot-password']" routerLinkActive="router-link-active" class="forgotten">Forgotten your password</a>
+        </div>
+    </div>
+</div>

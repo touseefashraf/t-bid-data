@@ -1,0 +1,169 @@
+.box{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+
+}
+.project-details .heading{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 65%;
+}
+
+.heading1{
+    width: 100%;
+    text-align: center;
+    font-size: 33px;
+    color: #084887;
+    font-weight: bold;
+    margin-top: 60px;
+}
+.no-files-msg {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(206, 0, 0);
+}
+.heading2{
+
+    text-align: center;
+    margin-top:10px ;
+    width: 100%;
+    font-size: 25px;
+    color: #084887;
+    font-weight: bold;
+}
+.checkMark{
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+    color: #084887;
+    font-weight: bold;
+}
+
+.dotEnimation{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #084887;
+}
+.dot {
+    margin-left: 18px;
+    font-weight: bold;
+    animation: showHideDot 2.5s ease-in-out infinite;
+
+  }
+.one { animation-delay: 0.2s; }
+.two { animation-delay: 0.4s; }
+.three { animation-delay: 0.6s; }
+
+@keyframes showHideDot {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    60% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .pageContainer {
+    width: 70%;
+    min-height: 60px;
+    border-bottom: 1px solid  rgb(192, 192, 192);
+    display: flex;
+    justify-content: center;
+    padding: 10px 10px 0px 10px;
+}
+.files-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.project-details{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.project-details h3{
+    color: #084887;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 0;
+
+}
+/* .docs-image {
+    width: 15%;
+} */
+.docs-image img {
+    width: 40px;
+}
+.file-info{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+.file-info-item {
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+}
+.file-info-item span{
+color:  rgb(192, 192, 192);
+}
+
+.doc-details{
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    width: 50%;
+    padding: 15px;
+}
+.actions{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+    padding: 25px;
+}
+.actions .blue-button-bg {
+    background-image: url(/assets/images/blue-button-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 6px 10px;
+}
+.actions .blue-button-bg:hover{
+    box-shadow: 0px 0px 5px 1px #42d5ff;
+    color:white
+}
+@media only screen and (max-width: 575.98px){
+    .pageContainer{
+        width: 100%;
+        border: none;
+    }
+    .project-details .heading{
+        width: 95%;
+    }
+    .actions{
+        padding: 0;
+        width: 35%;
+    }
+    .doc-details{
+        width: 65%;
+        padding: 0;
+    }
+
+}
+@media only screen and (min-width: 576px) and (max-width: 768px){
+    .pageContainer{
+        width: 90%;
+    }
+    .project-details .heading{
+        width: 85%;
+    }
+}

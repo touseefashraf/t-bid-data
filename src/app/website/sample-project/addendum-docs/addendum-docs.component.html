@@ -1,0 +1,34 @@
+<div class="" *ngIf="ds.dataStatus == 'done'">
+    <div class="topNav">
+        <div class="topNavItem">File Name</div>
+        <div class="topNavItem hide-col">File Size</div>
+        <div class="topNavItem hide-col">Uploaded Date</div>
+        <div class="grabDoc" style="background-color: #084887;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;<a *ngIf="data.length > 0" class="set-cursor" (click)="downloadFolder()"><span class="grab-desktop">Grab All Docs</span></a></div>
+    </div>
+    <ng-container *ngIf="data.length > 0">
+        <ng-container *ngFor="let d of data">
+            <div class="pageContainer" *ngIf="d.document_type == 'addendum'">
+                <div class="pageData">{{d.name}}</div>
+                <div class="pageData hide-col">{{d.file_size | fileSizeConverter}}</div>
+                <div class="pageData hide-col">{{moment(d.created_at).format(dateFormat)}}</div>
+                <div class="pageData d-flex justify-content-center align-items-center">
+                    <div class="pdf-holder">
+                        <span class="d-flex flex-column justify-content-center align-items-center">
+                            <img style="cursor: pointer;" class="specs-docs-image doc-img" src="assets/images/pdf.png">
+                            <p class="doc-img" style="margin: 0px;">View</p>
+                            <div class="pdf-container2">
+                                <iframe border="0" [src]="viewDoc(d.id,d.document_type,d.project_id)" class="pdf-file"></iframe>
+                            </div>
+                        </span>
+                        
+                    </div>
+                    <span class="d-flex flex-column justify-content-center align-items-center">
+                        <img style="cursor: pointer;" class="specs-docs-image" src="assets/images/pdf.png">
+                        <p style="margin: 0px;cursor: pointer;" (click)="downloadDocument(d.id, d)">Download</p>
+                    </span>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+</div>

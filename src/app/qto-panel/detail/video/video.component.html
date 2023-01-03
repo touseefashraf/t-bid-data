@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12 text-right">
+        <button type="button" class="sm blue" (click)="openModal(plan, -1)">Manage Video</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <iframe *ngIf="videoUrl" class="dt-youtube" [src]="videoUrl" allowfullscreen="" width="100%" height="400" frameborder="0"></iframe>
+    </div>
+</div>
+
+<ng-template #plan>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Manage Video</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="planForm" (ngSubmit)="save(planForm, f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-12 mb-1">
+                    <label class="mb-0">YouTube Link <span class="mendatory">*</span></label>
+                    <input formControlName="youtube_link" class="form-control mt-0" placeholder="Enter YouTube Link" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.youtube_link, f)" class="errors">
+                        <p *ngIf="g.youtube_link.errors.required">YouTube Link is required</p>
+                        <p *ngIf="g.youtube_link.errors.maxlength">Maximum {{ g.title.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <button type="submit" class="red sm m-1" [disabled]="saveLoading" [ngClass]="saveLoading?'in-progress':''">save <span></span><span></span><span></span></button>
+            <button type="button" class="black sm ml-1" (click)="cancel(f)">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>

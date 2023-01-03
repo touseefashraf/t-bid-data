@@ -1,0 +1,96 @@
+<div class="container mt-5"> 
+  <div class="contact-form" *ngIf="dataStatus == 'done'">
+    <div class="col-md-4">
+        <div class="head ">
+            <span class="sec-heading">Get </span>
+            <span class="head-bold">Quote</span>
+            <div style="margin: 5px 30px;width: 30%" class="green-border">&nbsp;</div>
+        </div>
+    </div>
+    <form [formGroup]="dataForm" (ngSubmit)="submit(dataForm)" #f="ngForm">
+
+      <div class="cform row">
+        <div class="col-md-6">
+            <label>Name <span class = "dColor">*</span></label>
+            <input type="text" formControlName="name" class="form-control" placeholder="Name" >
+            <div *ngIf="ui.checkErrors(g.name, f)" class="errors">
+              <p *ngIf="g.name.errors.required">Name required</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label>Company <span class = "dColor">*</span></label>
+            <input type="text" formControlName="company" class="form-control" placeholder="Company" >
+            <div *ngIf="ui.checkErrors(g.company, f)" class="errors">
+              <p *ngIf="g.company.errors.required">Company Name required</p>
+            </div>
+        </div>
+        <div class="col-md-6 pr-15">
+            <label>Contact No. <span class="dColor">*</span></label>
+            <input type="tel" formControlName="contact" class="form-control" placeholder="Contact No." >
+            <div *ngIf="ui.checkErrors(g.contact, f)" class="errors">
+              <p *ngIf="g.contact.errors.required">Contact required</p>
+            </div>
+          </div>
+        <div class="col-md-6 pr-15">
+            <label>Email <span class = "dColor">*</span></label>
+            <input type="email" formControlName="email" class="form-control" placeholder="Email">
+            <div *ngIf="ui.checkErrors(g.email, f)" class="errors">
+              <p *ngIf="g.email.errors.required">Email required</p>
+              <p *ngIf="g.email.errors.email">Please enter valid email</p>
+            </div>
+        </div>
+        <div class="col-md-6 pr-15">
+            <label>Address <span class = "dColor">*</span></label>
+            <input type="text" class="form-control" placeholder="Search location" [ngModelOptions] = "{standalone:true}" #search [(ngModel)]="address" formControlName="address">
+            <div *ngIf="ui.checkErrors(g.address, f)" class="errors">
+              <p *ngIf="g.address.errors.required">Address required</p>
+            </div>
+          </div>
+        <div class="col-md-6 pr-15">
+            <label>No. of Drawings <span class = "dColor">*</span></label>
+            <input type="number" formControlName="no_drawings" class="form-control" placeholder="No. of Drawings" >
+            <div *ngIf="ui.checkErrors(g.no_drawings, f)" class="errors">
+              <p *ngIf="g.no_drawings.errors.required">No. of Drawings required</p>
+            </div>
+          </div>
+        <div class="col-md-6 pr-15">
+            <label>Target No. of Days <span class = "dColor">*</span></label>
+            <input class="form-control" formControlName="target_days" placeholder="Target No. of Days" >
+            <div *ngIf="ui.checkErrors(g.target_days, f)" class="errors">
+              <p *ngIf="g.target_days.errors.required">No. of Drawings required</p>
+            </div>
+          </div>
+      </div>
+      
+      <div class="files-main">
+       
+        <div class="files-item">
+          <app-add-spec-doc></app-add-spec-doc>
+        </div>  
+        <div class="files-item">
+          <app-add-plan-doc></app-add-plan-doc>
+        </div>  
+       
+      </div>
+      <div class="row">
+      <div class="col-md-12">
+        <re-captcha (resolved)="resolved($event)" siteKey="{{siteKey}}"></re-captcha>
+      </div>
+    </div>
+      <div class="col-md-12" style="margin-top: 25px; padding: 0px;">
+        <button type="submit" class="fsubmit btn blue-button-bg">
+            Get Quote
+            <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+        </button>
+    </div>
+    </form>
+  </div>
+  <ng-container *ngIf="dataStatus == 'submitted'">
+    <div class="top-bar">
+        <p class="text-center">Quote Requested Sent!</p>
+    </div>
+    <div class="successfully-registered text-center">
+        <h1>Thank you! We have received your enquiry and will respond to you within 24 hours.</h1>
+    </div>
+</ng-container>
+</div>

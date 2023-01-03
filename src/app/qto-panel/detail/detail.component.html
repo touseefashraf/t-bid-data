@@ -1,0 +1,80 @@
+<div class="main-container" *ngIf="dataStatus=='done'">
+    <div class="title-wrapper">
+        <h2 class="title">Projects List | {{p.title}}</h2>
+    </div>
+
+    <div class="headbar" *ngIf="dataStatus=='done'">
+        <div>
+            <div>
+                <ul id="progressbar">
+                    <li (click)="activeTab = 'detailTab'" [ngClass]="{'active': activeTab == 'detailTab'}" id="details">
+                        <p>Details</p>
+                    </li>
+
+                    <li (click)="activeTab = 'ownerTab'" [ngClass]="{'active': activeTab == 'ownerTab'}" id="owner">
+                        <p>Owner / Authority</p>
+                    </li>
+                    <li (click)="activeTab = 'plansTab'" [ngClass]="{'active': activeTab == 'plansTab'}" id="planHolders">
+                        <p>Plan Holders</p>
+                    </li>
+                    <li (click)="activeTab = 'specsTab'" [ngClass]="{'active': activeTab == 'specsTab'}" id="specsDocument">
+                        <p>Specs Documents</p>
+                    </li>
+                    <li (click)="activeTab = 'plansTab'" [ngClass]="{'active': activeTab == 'plansTab'}" id="planDocument">
+                        <p>Plan Documents</p>
+                    </li>
+                    <li (click)="activeTab = 'addendumTab'" [ngClass]="{'active': activeTab == 'addendumTab'}" id="addendumDocument">
+                        <p>Addendum Documents</p>
+                    </li>
+                    <li (click)="activeTab = 'othersTab'" [ngClass]="{'active': activeTab == 'othersTab'}" id="otherDocument">
+                        <p> Documents</p>
+                    </li>
+                    <li (click)="activeTab = 'qtoTab'" [ngClass]="{'active': activeTab == 'qtoTab'}" id="qtoDocument">
+                        <p>QTO Documents</p>
+                    </li>
+
+                    <li (click)="activeTab = 'videoTab'" [ngClass]="{'active': activeTab == 'videoTab'}" id="qtoVideo">
+                        <p>QTO Video</p>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="activeTab=='detailTab'">
+        <app-general-info [p]="p"></app-general-info>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='ownerTab'">
+        <app-owner [p]="p"></app-owner>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='specsTab'">
+        <app-specs [specs]="specs" [projectId]="p.id"></app-specs>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='plansTab'">
+        <app-plans [plan]="plan" [projectId]="p.id"></app-plans>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='qtoTab'">
+        <app-qto [qto]="qto" [projectId]="p.id"></app-qto>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='addendumTab'">
+        <app-addendum [addendum]="addendum" [projectId]="p.id"></app-addendum>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='othersTab'">
+        <app-others [others]="other" [projectId]="p.id"></app-others>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='videoTab'">
+        <app-video [video]="p.youtube_link" [projectId]="p.id"></app-video>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab=='planHolderTab'">
+        <app-plan-holder-project [planHolder]="p.project_plan_holders" [projectId]="p.id"></app-plan-holder-project>
+    </ng-container>
+</div>

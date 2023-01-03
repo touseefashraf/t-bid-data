@@ -1,0 +1,92 @@
+<div class="text-right">
+    <button class="blue sm" (click)="openModal(addDocs)">Upload Documents</button>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Date</th>
+                <th>CSI Divisions</th>
+                <th class="col-actions download-all" style="width: 170px">
+                    <i class="fa fa-download" aria-hidden="true"></i>&nbsp;<a *ngIf="qto.length > 0" class="set-cursor" (click)="downloadFolder()">Grab All Docs</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of qto;let i = index">
+                <td *ngIf="s.uploading" colspan="5" class="text-center"><img class="spinner-custom" src="/assets/images/spinner.svg" width="100"></td>
+                <ng-container *ngIf="!s.uploading">
+                    <td>{{s.name}}</td>
+                    <td>{{s.file_size}} KB</td>
+                    <td>{{moment(s.updated_at).format(dateFormat)}}</td>
+                    <td>
+                        <ng-container *ngIf="s.full_project_qto==1"><button class="sm m-1 inactive-button"type="button">Full Project</button></ng-container>
+                        <ng-container *ngIf="s.full_project_qto==0">
+                            <span *ngFor="let i of s.project_csi_divisions">
+                                <button class="sm m-1 active-button"type="button">{{i.csi_division.name}}</button>
+                            </span>
+                        </ng-container>
+                    </td>
+                    <td class="d-flex justify-content-around">
+                        <img src="/assets/images/excel.png" class="img-width set-cursor" (click)="downloadDocument(s.id,s)">
+                        <button class="sm red" (click)="deleteFile(i)">Delete</button>
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="qto.length == 0">
+            <tr>
+                <td colspan="100">
+                    <app-no-data-found></app-no-data-found>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-template #addDocs>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Upload Documents</h4>
+    </div>
+    <div class="modal-body" style="min-height: 250px; overflow-y: auto;">
+
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+
+                <div class="doc-type">
+                    <div [ngClass]="(full_project_qto==1)?'doc-item active':'doc-item inactive'" (click)="full_project_qto=1">
+                        Full Project
+                    </div>
+                    <div class="doc-item" [ngClass]="(full_project_qto==0)?'doc-item active':'doc-item inactive'" (click)="full_project_qto=0">
+                        CSI Divisions
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="full_project_qto==0">
+                <label>CSI Divisions</label>
+                <div class="csi-division">
+                    <div class="item" *ngFor="let d of csiList; let i = index">
+                        <!-- <input type="checkbox" [checked]="checkcsiId(d.id)" [id]="'csi-'+d.id" [name]="'csi-'+i+d.name" [value]="d.id" (change)="spliceAddCsiId(d.id)">
+                        <label [for]="'csi-'+d.id">{{d.name}}</label> -->
+                        <button [ngClass]="(checkcsiId(d.csi_division.id))?'sm m-1 active-button':'sm m-1 inactive-button'" (click)="spliceAddCsiId(d.csi_division.id,i)" type="button">{{d.csi_division.name}}</button>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3">
+                <div class="tut-pro-photo">
+                    <input type="file" style="display: none;" id="other-files" (change)="onDocumentChange($event)" multiple>
+                    <button class="blue sm" (click)="browseFiles($event)">Upload Documents</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" (click)="save()" class="red sm m-1">Save</button>
+        <button type="button" class="black sm ml-1" (click)="cancelButton()">Cancel</button>
+    </div>
+</ng-template>

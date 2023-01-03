@@ -1,0 +1,117 @@
+<div class="row m-3 no-gutters" *ngIf="!fetching">
+    <div class="col-md-12 mb-2">
+        <div class="d-flex justify-content-between">
+            <h4>View Quote</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-md table-hover">
+                <tbody>
+                    <tr>
+                        <td class="heading">Name</td>
+                        <td>{{quoteDetails.name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Company</td>
+                        <td>{{quoteDetails.company}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Contact No.</td>
+                        <td>{{quoteDetails.contact}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Email</td>
+                        <td>{{quoteDetails.email}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Address</td>
+                        <td>{{quoteDetails.address}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">No. of Drawings</td>
+                        <td>{{quoteDetails.no_drawings}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Target No. of Days</td>
+                        <td>{{quoteDetails.target_days}}</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Description</td>
+                        <td>{{quoteDetails.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between">
+            <h4>Spec Documents</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Size</th>
+                        <th>Date</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let d of quoteDetails.documents">
+                        <tr *ngIf="d.document_type == 'spec'">
+                            <td>{{d.name}}</td>
+                            <td>{{d.file_size}}KB</td>
+                            <td>{{moment(d.created_at).format(dateFormat)}}</td>
+                            <td>
+                                <div class="img">
+                                    <img (click)="getDoc(quoteDetails.id,d.document_type,d.id)" class="w-100" src="assets/images/pdf.png">
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tbody *ngIf="getData('spec')">
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            <h1>No Data Found</h1>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between">
+            <h4>Plan Documents</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Size</th>
+                        <th>Date</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let d of quoteDetails.documents">
+                        <tr *ngIf="d.document_type == 'plan'">
+                            <td>{{d.name}}</td>
+                            <td>{{d.file_size}}KB</td>
+                            <td>{{moment(d.created_at).format(dateFormat)}}</td>
+                            <td>
+                                <div class="img">
+                                    <img (click)="getDoc(quoteDetails.id,d.document_type,d.id)" class="w-100" src="assets/images/pdf.png">
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tbody *ngIf="getData('plan')">
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            <h1>No Data Found</h1>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

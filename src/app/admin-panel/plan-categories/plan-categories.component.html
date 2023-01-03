@@ -1,0 +1,124 @@
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4>Plan Categories</h4>
+            <button class="green sm mb-2" (click)="openModal(plan, -1)">Add Category</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Minimum Range</th>
+                        <th>Maximum Range</th>
+                        <th>Display</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+                <ng-container *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="planCategoriesList.length > 0; else noDataFound">
+                        <tr *ngFor="let d of planCategoriesList; let i = index">
+                            <td>{{d.title}} </td>
+                            <td>$ {{d.min_bid_range | commaSeparation}} </td>
+                            <td>$ {{d.max_bid_range | commaSeparation}} </td>
+                            <td>
+                                <ng-container *ngIf="d.web_display==1">Yes</ng-container>
+                                <ng-container *ngIf="d.web_display==0">No</ng-container>
+                             </td>
+                            <td class=" d-flex justify-content-center align-items-center">
+                                <div class="image-upload">
+                                    <button [routerLink]="['/admin/plans/'+d.id]" class="green sm">Add/View</button>
+                                </div>
+                                <div class="px-2 image-upload">
+                                    <i (click)="openModal(plan,i)" class="fa fa-edit themeCol2 "></i>
+                                </div>
+                                <div class="px-2 danger">
+                                    <i class="fa fa-trash" (click)="confirmingModal(confirming, d.id,i)"></i>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #plan>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Manage Categories</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="planForm" (ngSubmit)="save(planForm, f)" #f="ngForm">
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Title <span class="mendatory">*</span></label>
+                    <input formControlName="title" class="form-control mt-0" placeholder="Enter Title" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.title, f)" class="errors">
+                        <p *ngIf="g.title.errors.required">Title is required</p>
+                        <p *ngIf="g.title.errors.maxlength">Maximum {{ g2.title.maxlength.requiredLength }} charaters</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Min Bid Range <span class="mendatory">*</span></label>
+                    <input type="number" formControlName="min_bid_range" min="0" [max]="planForm.value.max_bid_range" class="form-control mt-0" placeholder="Enter Minimum Bid Range" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.min_bid_range, f)" class="errors">
+                        <p *ngIf="g.min_bid_range.errors.required">Minimum Bid Range is required</p>
+                        <p *ngIf="g.min_bid_range.errors.min">Minimum Bid cant be less then 0</p>
+                        <p *ngIf="g.min_bid_range.errors.max">Minimum Bid cant be greater then Maximum Bid</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <label class="mb-0">Max Bid Range <span class="mendatory">*</span></label>
+                    <input type="number" [min]="planForm.value.min_bid_range" formControlName="max_bid_range" class="form-control mt-0" placeholder="Enter Maximum Bid Range" [ngClass]="{'form-submitted': f.submitted}">
+                    <div *ngIf="ui.checkErrors(g.max_bid_range, f)" class="errors">
+                        <p *ngIf="g.max_bid_range.errors.required">Maximum Bid Range is required</p>
+                        <p *ngIf="g.max_bid_range.errors.min">Maximum Bid cant be less then Minimum Bid</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label class="mb-0">Display on WebSite <span class="mendatory">*</span></label>
+                    <select formControlName="web_display" class="form-control mt-0" [ngClass]="{'form-submitted': f.submitted}">
+                        <option value="null">Select</option>
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                    <div *ngIf="ui.checkErrors(g.web_display, f)" class="errors">
+                        <p *ngIf="g.web_display.errors.required">It is required</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- <button type="button" class="red sm m-1" *ngIf="selectedIndex > -1">View Plans</button> -->
+            <button type="submit" class="red sm m-1" [disabled]="saveLoading" [ngClass]="saveLoading?'in-progress':''">save <span></span><span></span><span></span></button>
+            <button type="button" class="black sm ml-1" (click)="cancelRegionButton(f)">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #confirming>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete?</p>
+        <button type="button" class="green sm" (click)="modalRef.hide()">No</button>
+        <button type="button" class="red sm" (click)="delete()" [disabled]="yesLoading" [ngClass]="yesLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>

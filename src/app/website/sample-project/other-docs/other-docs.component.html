@@ -1,0 +1,27 @@
+<div class="" *ngIf="ds.dataStatus == 'done'">
+    <div class="file-data">
+        <div class="topNav">
+            <div class="topNavItem">File Name</div>
+            <div class="topNavItem hide-col">File Size(kb)</div>
+            <div class="topNavItem hide-col">Data</div>
+            <div class="grabDoc" style="background-color: #084887;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;<a *ngIf="data.length > 0" class="set-cursor" (click)="downloadFolder()"><span>Grab All Docs</span></a></div>
+        </div>
+        <ng-container *ngIf="data.length > 0">
+            <ng-container *ngFor="let d of data">
+                <div class="pageContainer" *ngIf="d.document_type == 'other'">
+                    <div class="pageData">{{d.name}}</div>
+                    <div class="pageData hide-col">{{d.file_size}}</div>
+                    <div class="pageData hide-col">{{moment(d.created_at).format(dateFormat)}}</div>
+                    <div class="pageData pdf-holder">
+                        <img class="specs-docs-image" src="assets/images/pdf.png">
+                        <p>View</p>
+                        <div class="pdf-container2">
+                            <iframe border="0" [src]="viewDoc(d.id,d.document_type,d.project_id)" class="pdf-file"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+  
+</div>

@@ -1,0 +1,16 @@
+<div class="main-container">
+    <div class="title-wrapper">
+        <h2 class="title">Subbidding</h2>
+        <button class="red sm" (click)="saveContent()" [disabled]= "waiting.save" [ngClass]="{'in-progress': waiting.save}">Save
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <div class="content-container mt-2">
+        <!-- <div class="">
+            <angular-editor [config]="editorConfig" [(ngModel)]="dataToSend.content"></angular-editor>
+        </div> -->
+        <quill-editor [(ngModel)]="dataToSend.content"></quill-editor>
+    </div>
+</div>

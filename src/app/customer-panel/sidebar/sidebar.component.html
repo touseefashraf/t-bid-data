@@ -1,0 +1,11 @@
+<div class="sidebar_navigation sidebar-bottom-margin">
+    <ul>
+        <li><a href="#" [routerLink]="['/customer/profile']"><i class="fas fa-cogs profile"></i> <span>Profile Settings</span></a></li>
+        <li><a href="#" [routerLink]="['/customer/private-projects']"><i class="fas fa-user-secret private"></i> <span>Private Projects</span></a></li>
+        <li><a href="#" [routerLink]="['/customer/manage-searches']"><i class="fas fa-search search"></i> <span>Manage Searches</span></a></li>
+        <li><a href="#" [routerLink]="['/customer/wish-list']"><i class="fas fa-heart wishlist"></i> <span>Wish List</span></a></li>
+        <li><a href="#" [routerLink]="['/customer/downloads']"><i class="fas fa-download download"></i> <span>Download History</span></a></li>
+        <li><a href="#" [routerLink]="['/customer/change-password']"><i class="fas fa-lock password"></i> <span>Change Password</span></a></li>
+        <li><a href="#" (click)="logOut()"><i class="fas fa-sign-out-alt logout"></i> <span>Logout</span></a></li>
+    </ul>
+</div>

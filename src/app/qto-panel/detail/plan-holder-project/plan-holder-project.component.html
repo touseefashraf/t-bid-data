@@ -1,0 +1,30 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Company</th>
+                <th>Address</th>
+                <th>Contact Name</th>
+                <th>Contact #</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of planHolder; let i=index">
+                <td width="50">{{i+1}}</td>
+                <td>{{s.plan_holder.company_name}}</td>
+                <td>{{s.plan_holder.address}}</td>
+                <td>{{s.plan_holder.poc_first_name+' '+s.plan_holder.poc_last_name}}</td>
+                <td>{{s.plan_holder.contact_1}}</td>
+            </tr>
+        </tbody>
+
+        <tbody *ngIf="planHolder.length == 0">
+            <tr>
+                <td colspan="100">
+                    <app-no-data-found></app-no-data-found>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>        

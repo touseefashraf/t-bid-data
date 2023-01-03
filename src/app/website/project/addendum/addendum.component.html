@@ -1,0 +1,115 @@
+<!-- <div  #printContentTemp>
+    <p>hello</p>
+</div> -->
+<div *ngIf="ds.dataStatus == 'done'" id="printContent">
+    <div class="error-container" *ngIf="this.api.user.user_type == 'customer' && checkSubRange == false && susbcriptionError !== ''">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle mr-3"></i>
+            <p>{{susbcriptionError}}</p>
+        </div>
+        <div>
+            <i style="cursor: pointer" (click)="susbcriptionError = ''" class="fas fa-times"></i>
+        </div>
+    </div>
+    <div class="file-data">
+        <div class="topNav">
+            <div class="topNavItem">File Name</div>
+            <div class="topNavItem hide-col">File Size</div>
+            <div class="topNavItem hide-col">Uploaded Date</div>
+            <div class="grabDoc" style="background-color: #084887;">
+                <i class="fa fa-download" aria-hidden="true"></i>&nbsp;
+                <ng-container *ngIf="this.api.user.user_type == 'customer' && checkSubRange == true && susbcriptionError == ''">
+                    <a class="set-cursor" *ngIf="!getData()" (click)="downloadFolder()">
+                        <span>Grab All Docs</span>
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="this.api.user.user_type == 'customer' && checkSubRange == false && susbcriptionError !== ''">
+                    <a class="set-cursor">
+                        <span (click)="openModal(errorModal)">Grab All Docs</span>
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="this.api.user.user_type != '' && this.api.user.user_type != 'customer'">
+                    <a class="set-cursor" *ngIf="!getData()" (click)="downloadFolder()">
+                        <span>Grab All Docs</span>
+                    </a>
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngIf="ds.projectDetails.documents.length > 0">
+            <ng-container *ngFor="let d of ds.projectDetails.documents">
+                <div class="pageContainer" *ngIf="d.document_type == 'addendum'">
+                    <div class="pageData svg-section">
+                        <span>{{d.name}}</span>
+                        <img class="mark-svgs new-svg" *ngIf="d.mark_as_new == 1" src="/assets/images/New-tbd.svg" alt="">
+                        <img class="mark-svgs update-svg" *ngIf="d.mark_as_update == 1" src="/assets/images/Update-tbd.svg" alt="">
+                    </div>
+                    <div class="pageData hide-col">{{d.file_size | fileSizeConverter}}</div>
+                    <div class="pageData hide-col">{{ m(d.created_at).format(dateFormat)}}</div>
+                    <div class="pageData">
+                        <div style="width: 50%;
+                        display: flex;
+                        text-align: center;
+                        margin: auto;">
+                            <div class="pdf-holder">
+                                <img style="cursor: pointer;" class="specs-docs-image" src="assets/images/pdf.png">
+                                <p style="margin: 0px;cursor: pointer;">View</p>
+                                <div class="pdf-container2" (mouseover)="makeHoverResults(d, 'hover')">
+                                    <div class="error-msg" *ngIf="hoverResults[d.id]?.status == 'pending'" style="text-align: center;">
+                                        <img [src]="spinner" style="margin: auto;">
+                                    </div>
+                                    <ng-container *ngIf="hoverResults[d.id]?.status == 'success'">
+                                        <iframe border="0" [src]="viewDoc(d.id,d.document_type,d.project_id)" class="pdf-file"></iframe>
+                                    </ng-container>
+                                    <ng-container *ngIf="hoverResults[d.id]?.status == 'error'">
+                                        <div class="error-msg" *ngIf="hoverResults[d.id]?.message == 'login'">
+                                            <h1>
+                                                Please login as customer
+                                            </h1>
+                                            <button class="secondary" [routerLink]="['/login']">Login</button>
+                                        </div>
+                                        <div class="error-msg2" *ngIf="hoverResults[d.id]?.message == 'upgrade'">
+                                            <img src="/assets/images/decide-graphic.png">
+
+                                            <h1>
+                                                Please upgrade your subscription to get access.
+                                            </h1>
+
+                                            <button class="secondary" [routerLink]="['/plans']">Subscription Plan</button>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div style="margin-left: 27px; margin: auto;">
+                                <img style="cursor: pointer;" class="specs-docs-image" src="assets/images/pdf.png">
+                                <p style="margin: 0px;cursor: pointer;" (click)="preError(d,'download')">Download</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <div class="text-center" *ngIf="getData()">
+            <h1 class="no-data">No Data Found</h1>
+        </div>
+    </div>
+</div>
+
+<ng-template #errorModal>
+    <div class="modal-body">
+        <div class="text-right">
+            <i style="cursor: pointer" class="fas fa-times" (click)="modalRef.hide()"></i>
+        </div>
+        <div class="text-center mt-3">
+            <img src="/assets/images/decide-graphic.png" alt="">
+        </div>
+        <div class="text-center mt-3">
+            <p style="color: white;font-weight: bold;">{{susbcriptionError}}</p>
+        </div>
+        <div class="text-center mt-3">
+            <button class="secondary" [routerLink]="['/plans']" (click)="modalRef.hide()">Subscription Plan</button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,19 @@
+<div class="" *ngIf="ds.dataStatus=='done'">
+    <div class="file-data">
+        <div class="topNav">
+            <div class="topNavItem">Company</div>
+            <div class="topNavItem" width="250px">Address</div>
+            <div class="topNavItem">Contact Name</div>
+            <div class="topNavItem">Contact #</div>
+        </div>
+        <ng-container *ngIf="data.length > 0">
+            <div class="pageContainer" *ngFor="let d of data">
+                <div class="pageData">{{d.plan_holder.company_name}}</div>
+                <div class="pageData">{{d.plan_holder.address}}</div>
+                <div class="pageData">{{ d.plan_holder.poc_first_name}}</div>
+                <div class="pageData">{{d.plan_holder.contact_1}}</div>
+            </div>
+
+        </ng-container>
+    </div>
+</div>

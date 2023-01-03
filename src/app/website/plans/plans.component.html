@@ -1,0 +1,172 @@
+<div class="top-row mt-5">
+    <div class="row">
+        <div class="col-md-6 "><img src="/assets/images/plans.png" class="first-background"></div>
+        <div class="col-md-6" style="padding: 50px;">
+            <h3>Subscription Plans</h3>
+            <p>Flexible plans that grow with you. Fastest and easiest way to grow your business is by hassle free bidding. We'll help you bid smarter from day one.</p>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="dataStatus=='fetching'">
+    <app-loader></app-loader>
+</ng-container>
+
+<ng-container *ngIf="dataStatus=='done'">
+    <div class="d-flex justify-content-center" *ngIf="this.api.user.user_type == 'customer' && checkSubRange == false && susbcriptionError !== ''">
+        <div class="error-container">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle mr-3"></i>
+                <p>{{susbcriptionError}}</p>
+            </div>
+            <div>
+                <i style="cursor: pointer" (click)="susbcriptionError = ''" class="fas fa-times"></i>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngFor="let d of plansList">
+        <div class="body-container">
+            <div class="nav-row" (click)="d.flag = !d.flag" [attr.aria-expanded]="!d.flag">
+                <div class="item">
+                    <h3><span>
+                            <i class="fa fa-plus-circle" *ngIf="d.flag==false"></i>
+                            <i class="fa fa-minus-circle" *ngIf="d.flag==true"></i>
+                            {{d.title}}</span></h3>
+                </div>
+                <div class="move-next"></div>
+                <div class="item">
+                    <h3>
+                        <span *ngIf="d.max_bid_range">Bid Range ${{+d.min_bid_range | suffix}}-${{+d.max_bid_range|suffix}}</span>
+                        <span *ngIf="!d.max_bid_range">Bid Range ${{d.min_bid_range | suffix}} +</span>
+                    </h3>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="body-container" *ngIf="d.flag===true">
+
+            <div class="subscription-row">
+                <div class="subscription" *ngFor="let p of d.plans">
+                    <div class="price" *ngIf="api.user.user_type != 'customer'">
+
+                        <span class="price-label">$ {{p.monthly_price}}</span>
+                        <br>
+                        <span class="price-per-pro">/project</span>
+
+                    </div>
+                    <ng-container *ngIf="api.user.user_type == 'customer'">
+                        <div [class]="subsRangeData?.plan_id == p.id?'price-golden':'price'">
+
+                            <span class="price-label">$ {{p.monthly_price}}</span>
+                            <br>
+                            <span class="price-per-pro">/project</span>
+
+                        </div>
+                    </ng-container>
+                    <div class="desc">
+                        <div class="item " style="flex-grow: 1;">
+                            <span class="icon-color fa fa-download " aria-hidden="true"></span> Download Limit
+                        </div>
+                        <div class="item"><b>{{p.yearly_downloads_limit}}</b></div>
+                    </div>
+                    <div class="desc">
+                        <div class="item " style="flex-grow: 1;">
+                            <span class="icon-color fa fa-clock-o" aria-hidden="true"></span> Duration
+                        </div>
+                        <div class="item"><b>Yealy</b></div>
+                    </div>
+                    <div class="desc">
+                        <div class="item " style="flex-grow: 1;">
+                            <span class="icon-color fa fa-money " aria-hidden="true"></span> Plan Cost
+                        </div>
+                        <div class="item"><b>$ {{p.yearly_price}}</b></div>
+                    </div>
+                    <div class="my-button-firsrt-not">
+                        <ng-container *ngIf="userType=='customer' && checkSubRange == true && subsRangeData?.plan_id">
+                            <button *ngIf="subsRangeData?.plan_id == p.id;else newSubscribe" class="button home-explore-btn btn orange-button-bg">Subscribed
+                                <div> <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i></div>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="userType=='customer' && checkSubRange == true && subsRangeData?.requested">
+                            <button *ngIf="subsRangeData?.requested.plan_id == p.id;else newSubscribe" class="button home-explore-btn btn orange-button-bg">Requested
+                                <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="userType=='customer' && checkSubRange == false && subsRangeData?.plan_id">
+                            <button *ngIf="subsRangeData?.plan_id == p.id;else newSubscribe" (click)="openModalSubscription(subscriptionTemplete,p,'renew')" class="button home-explore-btn btn orange-button-bg">Limit Reached
+                                <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="userType=='customer' && checkSubRange == true && subsRangeData?.hasOwnProperty('requested')">
+                            <ng-container *ngIf="subsRangeData?.requested !== null ;else newSubscribe"></ng-container>
+                        </ng-container>
+
+                        <ng-template #newSubscribe>
+                            <button (click)="openModalSubscription(subscriptionTemplete,p)" class="button home-explore-btn btn orange-button-bg">Subscribe
+                                <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                            </button>
+                        </ng-template>
+
+                        <a *ngIf="userType==''" [routerLink]="['/login']" style="text-decoration: none;">
+                            <button class="button home-explore-btn btn orange-button-bg">Subscribe
+                                <i class="fa fa-arrow-right button-arrow" aria-hidden="true"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+<div class="foot"></div>
+
+<ng-template #subscriptionTemplete>
+    <div class="modal-container">
+        <div class="first-portion">
+            <div class="image-container">
+                <img src="/assets/images/decide-graphic.png" alt="">
+            </div>
+        </div>
+        <div class="second-portion">
+            <div class="text-right">
+                <i style="cursor: pointer;color: orange;" class="fas fa-times mr-3 mt-3" (click)="modalRef.hide()"></i>
+            </div>
+            <div class="section-custom text-center">
+                <h1>$ {{(+selectedPlan.yearly_price /selectedPlan.yearly_downloads_limit).toFixed(0)}} /Project</h1>
+            </div>
+            <div class="text-custom">
+                <ng-container *ngIf="selectedCall == ''">
+                    <p class="text-center">Sales team will be connected to you via your provided email once the request has been sent.</p>
+                    <p class="text-center">Please use the button below to send request.</p>
+                </ng-container>
+                <ng-container *ngIf="selectedCall == 'renew'">
+                    <p class="text-center">Sales team will be connected to you via your provided email once the request has been sent.</p>
+                    <p class="text-center">Please use the button below to "Send Request" to renew subscription request.</p>
+                </ng-container>
+                <ng-container *ngIf="selectedCall == 'newSubs'">
+                    <p class="text-center" style="color: red;">By proceeding to this plan your previous subscription will be removed when your new request will be accepted by admin.</p>
+                    <p class="text-center">Please use the button below to "Send Request".</p>
+                </ng-container>
+
+
+            </div>
+            <div class="button-container mt-3 text-center">
+                <button class="orange " (click)="subscribePlan(selectedPlan.id)" [disabled]="waiting.loader" [ngClass]="{'in-progress': waiting.loader}">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <i class="far fa-envelope ml-2 mr-2"></i>
+                            <p style="font-weight: bold;">Send Request</p>
+                        </div>
+                        <div class="d-flex">
+                            <p>Plan Cost $ {{selectedPlan.yearly_price}} Yearly</p>
+                            <i class="fa fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>

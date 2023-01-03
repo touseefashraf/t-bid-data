@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <h4>Subscribers</h4>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Contact #</th>
+                    <th>Price</th>
+                    <th>Plan</th>
+                    <th>Downloads</th>
+                    <th>Date</th>
+                    <th>Payment Detail</th>
+                    <th class="text-center">Actions</th>
+
+                </tr>
+            </thead>
+            <ng-container *ngIf="dataStatus == 'fetching'">
+                <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+            </ng-container>
+            <tbody *ngIf="requestList.length > 0 && dataStatus == 'done'">
+                <ng-container *ngFor="let d of requestList; let i = index">
+
+                    <tr>
+                        <td>{{d.user.customer.first_name+' '+d.user.customer.last_name}}<br>
+                            {{d.user.email}}</td>
+                        <td>{{d.user.contact}}</td>
+                        <td>{{d.price |currency:'USD':'symbol-narrow'}}</td>
+                        <td>{{d.plan.title}} </td>
+                        <td>({{d.total_downloads}} / {{d.downloads_limit}})</td>
+                        <td>{{moment(d.start_date).format(dateFormat)}} - {{moment(d.end_date).format(dateFormat)}} </td>
+                        <td>{{d.payment_type}} </td>
+                        <td class=" d-flex justify-content-center">
+                            <div class="d-flex">
+                                <button *ngIf="d.status == 'inactive'" class="green sm" (click)="approveRequestConfirmation(approveTemplate,d.id,i)">Activate</button>
+                                <button *ngIf="d.status == 'active'" class="red sm" (click)="rejectRequestConfirmation(rejectTemplate,d.id,i)">Deactivate</button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+            <tbody *ngIf="dataStatus == 'done' && requestList.length == 0">
+                <tr>
+                    <td colspan="8">
+                        <app-no-data-found></app-no-data-found>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<ng-template #approveTemplate>
+    <div class="modal-body text-center">
+        <label>Payment Type:</label>
+        <p>Are you sure to Active</p>
+        <button type="button" class="sm green" (click)="modalRef.hide()">No</button>
+        <button type="button" class="sm red" (click)="acceptRequest()" [disabled]="acceptLoading" [ngClass]="acceptLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>
+
+<ng-template #rejectTemplate>
+    <div class="modal-body text-center">
+        <p>Are you sure to inactive</p>
+        <button type="button" class="sm green" (click)="modalRef.hide()">No</button>
+        <button type="button" class="sm red" (click)="rejectRequest()" [disabled]="rejectLoading" [ngClass]="rejectLoading?'in-progress':''">Yes <span></span><span></span><span></span></button>
+    </div>
+</ng-template>

@@ -1,0 +1,61 @@
+<div class="heading">
+    <h3>Private Projects:</h3>
+</div>
+<div class="card-holder">
+    <ng-container *ngIf="!fetching">
+
+        <div class="card card-colored" *ngFor="let d of privateProjectList;let i = index">
+            <div class="row">
+                <div class="col-md-8 set-text">
+                    <h2>{{d.title}}</h2>
+                    <p class="des">{{d.description}}</p>
+                    <p class="location">
+                        <i class="fa fa-map-marker address-icon"></i>
+                        <span>{{d.bid_location}}</span>
+                    </p>
+                </div>
+                <div class="col-md-4 bid-details">
+                    <p class="mt-2"><b>Bid Amount: $</b><span>{{d.bid_amount}}</span></p>
+                    <p class="mt-2"><b>Bid Date:</b><span>{{moment(d.bidDate).format('MMM DD, YYYY')}}</span></p>
+                    <p class="mt-2">
+                        <button [routerLink]="['/project-details/'+d.id+'/details']" routerLinkActive="router-link-active" class="primary">
+                            <span>See Detail</span>
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" *ngIf="!fetching && privateProjectList.length > 0">
+            <ul class="pagination justify-content-center  mt-3">
+                <li class="page-item" *ngIf="pagination.prev_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(page-1)">Previous</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.prev_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Previous</a>
+                </li>
+
+                <ng-container *ngFor="let p of [].constructor(pagination.last_page); let i=index">
+                    <li [class]="page==(i+1) ? 'page-item active' : 'page-item'">
+                        <a class="page-link" href="javascript: void(0)" (click)="setPagination(i+1)">{{i+1}}</a>
+                    </li>
+                </ng-container>
+
+                <li class="page-item" *ngIf="pagination.next_page_url != null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1" (click)="setPagination(+page+1)">Next</a>
+                </li>
+                <li class="page-item disabled" *ngIf="pagination.next_page_url == null">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <div *ngIf="privateProjectList.length == 0" class="text-center">
+            <app-no-data-found></app-no-data-found>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="fetching">
+       <div class="loader-row">
+        <img src="/assets/img/loading.gif" class="data-loader">
+    </div>
+    </ng-container>
+    
+</div>

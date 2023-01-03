@@ -1,0 +1,137 @@
+<div class="heading">
+    <h3>Manage Searches:</h3>
+</div>
+<div class="text-right mb-2">
+    <button class="primary" (click)="openModalSaveSearches(saveSearchTemplate, -1)">Add Searches</button>
+</div>
+<div class="table-responsive">
+    <div class="loader-row" *ngIf="fetching">
+        <img src="/assets/img/loading.gif" class="data-loader">
+    </div>
+    <table class="table table-hover" *ngIf="!fetching">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th width="100">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of savedSearchesList; let i = index">
+                <td>{{d.title}}</td>
+                <td>{{moment(d.updated_at).format(dateFormat)}}</td>
+                <td>
+                    <div class="">
+                        <i class="fas fa-edit edit mr-2" (click)="openModalSaveSearches(saveSearchTemplate, i)"></i>
+                        <i class="fas fa-trash delete" (click)="deleteConfirming(deleteConfirmingTemplate, i)" style="cursor: pointer;"></i>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="!fetching && savedSearchesList.length == 0">
+            <tr>
+                <td colspan="1000" class="text-center">
+                    <app-no-data-found></app-no-data-found>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<ng-template #saveSearchTemplate>
+    <div class="custom-modal-container">
+        <div class="text-left modal-header">
+            <p>Save Search</p>
+        </div>
+    </div>
+    <form [formGroup]="saveSearchForm" (ngSubmit)="saveSearchData(saveSearchForm, f)" #f="ngForm">
+        <div class="modal-body">
+            <div class="d-flex keyword flex-column">
+                <label>Save Search as</label>
+                <input type="text" placeholder="Save Search as" formControlName="title">
+                <div *ngIf="ui.checkErrors(g.title, f)" class="errors">
+                    <p *ngIf="g.title.errors.required">Title is required</p>
+                    <p *ngIf="g.title.errors.minlength">Title should atleast 5 characters</p>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Keyword</label>
+                    <input type="text" placeholder="Enter Keyword" formControlName="keyword">
+                    <div *ngIf="ui.checkErrors(g.keyword, f)" class="errors">
+                        <p *ngIf="g.keyword.errors.maxlength">Keyword should not be greater then 100 characters</p>
+                        <p *ngIf="g.keyword.errors.minlength">Keyword should atleast 5 characters</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Location</label>
+                    <input type="text" placeholder="Enter Location" formControlName="location">
+                    <div *ngIf="ui.checkErrors(g.location, f)" class="errors">
+                        <p *ngIf="g.location.errors.maxlength">Location should not be greater then 100 characters</p>
+                        <p *ngIf="g.location.errors.minlength">Location should atleast 5 characters</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+                <div class="radio-btn">
+                    <input type="radio" id="radio1" value="open" name="project_status" formControlName="project_status">
+                    <label for="radio1">Open Solicitation</label>
+                </div>
+                <div class="radio-btn">
+                    <input type="radio" id="radio2" value="bid_results" name="project_status" formControlName="project_status">
+                    <label for="radio2">Bid Results</label>
+                </div>
+                <div class="radio-btn">
+                    <input type="radio" id="radio3" value="awarded" name="project_status" formControlName="project_status">
+                    <label for="radio3">Awarded</label>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Price Range From</label>
+                    <input type="number" min="0" [max]="saveSearchForm.controls.price_to.value" placeholder="Enter Min Price" formControlName="price_from">
+                    <div *ngIf="ui.checkErrors(g.price_from, f)" class="errors">
+                        <p *ngIf="g.price_from.errors.min">Min Price cant be less then 0</p>
+                        <p *ngIf="g.price_from.errors.max">Min Price cant be greater then Max Price</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Price Range To</label>
+                    <input type="number" [min]="saveSearchForm.controls.price_from.value" placeholder="Enter Max Price" formControlName="price_to">
+                    <div *ngIf="ui.checkErrors(g.price_to, f)" class="errors">
+                        <!-- <p *ngIf="g.price_to.errors.max">Location should not be greater then 100 characters</p> -->
+                        <p *ngIf="g.price_to.errors.min">Max price cant be less then min price</p> 
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex-column keyword mr-4">
+                    <label>Date From</label>
+                    <input type="text" placeholder="Enter Min Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY',adaptivePosition: true }" formControlName="date_from">
+                </div>
+                <div class="d-flex flex-column keyword">
+                    <label>Date To</label>
+                    <input type="text" placeholder="Enter Max Date" bsDatepicker [bsConfig]="{ dateInputFormat: 'MMMM Do YYYY',adaptivePosition: true }" formControlName="date_to">
+                </div>
+            </div>
+            <div class="hr-line">
+                <hr>
+            </div>
+            <div class="buttons-container text-right">
+                <button type="submit" class="primary">Save Search</button>
+                <button type="button" class="orange ml-3" (click)="cancel(f)">Close</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #deleteConfirmingTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete?</p>
+        <button [disabled]="updateLoading" [ngClass]="updateLoading?'in-progress':''" type="button" class="secondary mr-1" (click)="delete()">Yes
+            <span></span><span></span><span></span>
+        </button>
+        <button type="button" class="orange" (click)="modalRef.hide()">No</button>
+    </div>
+</ng-template>

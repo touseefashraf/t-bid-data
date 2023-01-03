@@ -1,0 +1,66 @@
+<div class="main-container">
+    <div class="row">
+        <div class="col-md-12 drag-drop-container">
+            <div class="thumbnail-container">
+                    <label class="lclass">Specification Documents</label>
+                    <!-- <button type="button" class="secondary" (click)="browseFiles($event)">Browse Files</button> -->
+                    <button *ngIf="uploadedFiles.length > 1" type="button" class="sm red" (click)="openConfirmingModal(confirmingTemplate)">Delete All Files</button>
+                    <button *ngIf="deletionIds.length > 0" type="button" class="sm red" (click)="openSelectedConfirmingModal(selectedConfirmingTemplate)">Delete Selected Files</button>
+            </div>
+            <input type="file" style="display: none;" id="other-files" (change)="onDocumentChange($event)" multiple>
+            <div class="images-containers-wrapper">
+                <div class="images-container" (dragover)="fileDragStart($event)" (dragenter)="fileDragStart($event)" (dragleave)="fileDragEnd($event)" (drop)="fileDropped($event)">
+                    <div class="image-thumbnail" *ngFor="let file of uploadedFiles; let i = index">
+                        <!-- <img [defaultImage]="spinnerSVG" [lazyLoad]="img.image"> -->
+                        <!-- <div  class="custom-checkbox">
+                            <input type="checkbox" [id]="'spec-'+file.id" [name]="'spec-'+i+file.id" [value]="file.id" (change)="addDeletionIds(file.id)" >
+                            <label  [for]="'spec-'+file.id"></label><br>
+                        </div> -->
+                        <div class="d-flex flex-column file-info"  *ngIf="!file.uploading">
+                            <i style="font-size: 50px;" class="far fa-file-pdf"></i>
+                            <p><b>ID:</b> {{file.id}}</p>
+                            <p *ngIf="file.name"><b>Name:</b> {{file.name}}</p>
+                            <p (click)="deleteFile(file.id,i)"><i class="delColor fas fa-trash"></i></p>
+                            <!-- <a (click)="downloadDocument(file.id,file)">Download</a> -->
+                        </div>
+                        <!-- <button type="button" class="xs red delete-image" (click)="deleteFile(i)"><i class="fas fa-trash"></i></button> -->
+                        <div class="uploader-progress file-info" *ngIf="file.uploading">
+                            <img [src]="spinnerSVG" class="loader-img" >
+                        </div>
+                    </div>
+
+                    <div class="upload-images-container" *ngIf="uploadedFiles.length === 0">
+                        <div class="icons">
+                            <p><i style="cursor: pointer;" (click)="browseFiles($event)"  class="fas fa-cloud-upload-alt"></i></p>
+                            <span class="dFile">
+                                <i class="ace-icon fa fa-caret-right red"></i>
+                                Drop files
+                            </span>
+                            <span class="fupload">to upload </span>
+                            <span class="fClick">(or click)</span>
+                            <br> 
+                            <span class="fupload">Only "PDF" files allowed.</span>
+                            <!-- <p>Drag Files Here</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<ng-template #confirmingTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete all Files?</p>
+        <button type="button" class="red sm" (click)="deleteAllFiles()">Yes</button>
+        <button type="button" class="green sm" (click)="mRef.hide()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #selectedConfirmingTemplate>
+    <div class="modal-body text-center">
+        <p>Do you want to Delete Selected Files?</p>
+        <button type="button" class="red sm" (click)="deleteSelectedFiles()">Yes</button>
+        <button type="button" class="green sm" (click)="mRef.hide()">No</button>
+    </div>
+</ng-template>

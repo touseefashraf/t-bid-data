@@ -1,0 +1,64 @@
+.custom-modal-container {
+    border-top: 4px solid var(--primary);
+}
+.custom-modal-container .modal-header {
+    background-color: #ccc;
+    padding: 12px 8px;
+}
+
+.custom-modal-container .modal-header p{
+    font-size: 26px;
+    color: black;
+    /* font-weight: bold; */
+}
+.keyword{
+    width: 100%;
+}
+.keyword input{
+    border-radius: 5px;
+    padding: 8px 8px ;
+    border: 1px solid #ccc;
+}
+.modal-body label{
+    padding: 0px;
+    margin: 0px;
+}
+.radio-btn label{
+margin-left: 5px;
+}
+.hr-line{
+    margin:6px 0px;
+}
+.buttons-container button{
+    width: 121px;
+}
+.heading{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #084887;
+    font-family: "Baloo Bhaina 2", cursive;
+   /* text-shadow: 0px 0px 1px #084887;*/
+}
+.heading h1{
+border-bottom: 4px solid green;
+}
+.delete {
+    cursor: pointer;
+    color: #DF1317;
+}
+.edit {
+    cursor: pointer;
+    color: #084887;
+}
+@media only screen and (max-width:768px) {
+    .heading h3 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+@media only screen and (max-width:425px){ 
+    .heading h1{
+        font-size: 20px;
+    }
+}

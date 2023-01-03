@@ -1,0 +1,110 @@
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4>Subbidding Plans</h4>
+            <button class="green sm mb-2" (click)="openModal(addEdit,-1)">Add New Plan</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>S#</th>
+                        <th>Plan Title</th>
+                        <th>Plan Price</th>
+                        <th>Description</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+                <ng-container *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="this.subbiddingPlans.length > 0">
+
+                        <tr *ngFor="let plan of this.subbiddingPlans; let i = index">
+                            <td>{{i+1}} </td>
+                            <td>{{plan.title}} </td>
+                            <td>{{plan.price}}</td>
+                            <td>
+                                <app-read-more [text]="plan.description" [maxLength]="50"></app-read-more>
+                            </td>
+                            <td class="d-flex justify-content-center align-content-center">
+                                <div class="themeCol2 px-2">
+                                    <i (click)="openModal(addEdit,i)"  class="fa fa-edit"></i>
+                                </div>
+                                <div class="danger px-2">
+                                    <i (click)="openModal(deleteTemplate,i)"  class="fa fa-trash"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </ng-container>
+            </table>
+
+        </div>
+    </div>
+</div>
+<ng-template #addEdit>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add New Plan </h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="plansForm" #f="ngForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-12 mb-1">
+                            <label class="mb-0">Plan Title:<span class="mendatory">*</span></label>
+                            <input formControlName="title" class="form-control" type="text" placeholder="Plan Title Here">
+                            <div *ngIf="ui.checkErrors(g.title, f)" class="errors">
+                                <p *ngIf="g.title.errors.required">Please Enter Plan title</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-1">
+                            <label class="mb-0">Plan Price:<span class="mendatory">*</span></label>
+                            <input formControlName="price" class="form-control" type="text" placeholder="Enter Plan Price">
+                            <div *ngIf="ui.checkErrors(g.price, f)" class="errors">
+                                <p *ngIf="g.price.errors.required">Please enter plan price</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-1">
+                            <label class="mb-0">Description:</label>
+                            <textarea formControlName="description" rows="5" class="form-control mt-0" placeholder="Short description here"></textarea>
+                            <!-- <div *ngIf="ui.checkErrors(c.description, u)" class="errors">
+                                <p *ngIf="c.description.errors.required">Description Required</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" (click)="save(f);" class="green sm m-1" [disabled]="loginLoading" [ngClass]="loginLoading?'in-progress':''">Save
+                <span></span><span></span><span></span>
+            </button>
+            <button type="button" class="red sm ml-1" (click)="cancelButton(f)">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #deleteTemplate>
+    <div class="modal-body">
+        <p>Are you sure that you want to delete?</p>
+        <div class="text-right">
+            <button class="xs black" (click)="cancelButton()">No</button>
+            <button class="xs red" (click)="deleteEntry()" [disabled]="loginLoading" [ngClass]="loginLoading?'in-progress':''">Yes
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</ng-template>

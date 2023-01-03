@@ -1,0 +1,126 @@
+<!-- <p>
+    Company image works!
+</p> -->
+
+<div class="row m-3 no-gutters">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex justify-content-between">
+            <h4>Company Images</h4>
+            <button class="green sm mb-2" (click)="openModalSubject(imgAdder, -1)">Add Image</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Link</th>
+                        <!-- <th>Code</th> -->
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <ng-container *ngIf="dataStatus == 'fetching'">
+                    <tbody [appSkeletonTabelLoader]="loaderOptions"></tbody>
+                </ng-container>
+                <ng-container *ngIf="dataStatus == 'done'">
+                    <tbody *ngIf="companyList.length > 0; else noDataFound">
+                        <tr *ngFor="let d of companyList; let i = index">
+                            <td class="td-image-container">
+                                <img [defaultImage]="spinnerSVG" [lazyLoad]="ds.companyImageUrl(d.id)" width="137" height="77">
+                            </td>
+                            <td>{{d.link}} </td>
+                            <!-- <td>{{d.code}} </td> -->
+                            <td class="text-center">
+                                <button type="button" class="sm green" (click)="openModalSubject(imgAdder,i)">Edit</button>
+                                <button type="button" class="sm red" (click)="deletingIndex=i; deletePop=pop; selectedId=d.id" #pop="bs-popover" [popover]="deleteTemplate" placement="left" [outsideClick]="true">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noDataFound>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <app-no-data-found></app-no-data-found>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #imgAdder>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Company Images</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="companyForm" #f="ngForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8 mb-1">
+                            <label class="mb-0">Link:<span class="mendatory">*</span></label>
+                            <input style="width: 300px;" formControlName="link" type="text" class="form-control mt-0" placeholder="Enter link" [ngClass]="{'form-submitted': f.submitted}">
+                            <div *ngIf="ui.checkErrors(g.link, f)" class="errors">
+                                <p *ngIf="g.link.errors.required">link is required</p>
+                                <p *ngIf="g.link.errors.maxlength">link should be 100 Characters</p>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-6 mb-1">
+                            <label class="mb-0">Country Code<span class="mendatory">*</span></label>
+                            <input formControlName="code" type="text" class="form-control mt-0" placeholder="Enter Country Code" [ngClass]="{'form-submitted': f.submitted}">
+                            <div *ngIf="ui.checkErrors(g.code, f)" class="errors">
+                                <p *ngIf="g.code.errors.required">Country Code is required</p>
+                                <p *ngIf="g.code.errors.maxlength">Country Code should be 50 Characters</p>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tut-pro-photo">
+                        <img [src]="thumbnail" id="banner-img">
+                        <input type="file" style="display: none;" id="thumbnail-image" (change)="onThumbnailChange($event, cropperModal)">
+                        <div class="text-center">
+                            <button type="button" class="green sm" (click)="browseThumbnail($event)" style="min-width: 137px">Browse Picture</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" appSmartClick (smartClick)="saveCompany(companyForm, f)" class="green sm m-1">save</button>
+            <button type="button" class="red sm ml-1" (click)="cancelCountryButton(f)">Cancel</button>
+
+        </form>
+    </div>
+</ng-template>
+<ng-template #cropperModal>
+    <div class="modal-body">
+        <ng-scrollbar class="modal-scrollbar">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="title-wrapper">
+                        <h2 class="title" style="font-size: 20px;">Adjust Image Size</h2>
+                        <div>
+                            <button type="button" class="sm red" (click)="doneCroppingThumbnail()">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="137/77" [onlyScaleDown]="true" [roundCropper]="false" format="png" outputType="base64" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()" [alignImage]="'center'">
+                    </image-cropper>
+                </div>
+            </div>
+        </ng-scrollbar>
+    </div>
+</ng-template>
+
+<ng-template #deleteTemplate>
+    <p>Are you sure that you want to delete?</p>
+    <button class="xs black" (click)="deletePop.hide()">No</button>
+    <button class="xs red" (click)="deleteCountry()">Yes</button>
+</ng-template>

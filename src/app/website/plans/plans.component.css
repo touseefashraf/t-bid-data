@@ -1,0 +1,204 @@
+.body-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.subscription-row {
+    width: 83%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.subscription {
+    width: 21%;
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    flex-direction: column;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 10px;
+}
+.price {
+    text-align: center;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    height: 160px;
+    flex-direction: column;
+    background-image: url(/assets/images/blue-banner.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.price-golden {
+    text-align: center;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    height: 190px;
+    flex-direction: column;
+    background-image: url(/assets/images/golden-banner.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.price-label {
+    font-size: 50px;
+    font-weight: 500;
+    margin-bottom: -20px;
+    margin-top: 10px;
+}
+.price-per-pro {
+    font-size: 20px;
+}
+.desc {
+    display: flex;
+    justify-content: flex-start;
+    width: 90%;
+    margin-bottom: 10px;
+}
+.item-grow {
+    flex-grow: 1;
+}
+.item h3 {
+    font-size: 18px;
+}
+.icon-color {
+    color:  #084887;
+}
+.my-button-firsrt-not {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 26px;
+}
+
+.orange-button-bg {
+    background-image: url(/assets/images/golden-button-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.home-explore-btn {
+    background-color:  #084887;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 15px;
+    border: none;
+    width: 185px;
+    text-align: left;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-decoration: none;
+}
+.foot {
+    margin-top: 34px;
+}
+.btn.focus,
+.btn:focus,
+.btn:hover {
+    color: #333;
+    text-decoration: none;
+}
+.nav-row {
+    cursor: pointer;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    background-color: #084887;
+    padding: 10px;
+    color: #fff;
+}
+.move-next {
+}
+.top-row {
+    width: 90%;
+    text-align: center;
+    margin-bottom: 55px;
+}
+.first-background {
+    width: 77%;
+}
+
+.error-container {
+    width: 90%;
+    background-color: red;
+    padding: 7px 14px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.error-container p {
+    margin: 0px;
+}
+.error-container p,
+i {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+}
+.first-portion {
+    background-color: #084887;
+}
+.first-portion .image-container,
+.section-custom {
+    padding: 100px;
+}
+.modal-container {
+    display: flex;
+}
+.section-custom {
+    width: 100%;
+}
+.section-custom h1 {
+    color: #084887;
+}
+.modal-container p {
+    margin: 0px;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+.text-custom {
+    padding: 0px 16px;
+    font-weight: bold;
+}
+@media only screen and (max-width: 768px) {
+    .subscription {
+        width: 45%;
+    }
+    .first-background {
+        margin-top: 67px;
+    }
+    .item h3 {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 528px) {
+    .subscription {
+        width: 95%;
+    }
+    .move-next {
+        width: 100%;
+        height: 0;
+    }
+    .item h3 {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .subscription {
+        width: 95%;
+    }
+}

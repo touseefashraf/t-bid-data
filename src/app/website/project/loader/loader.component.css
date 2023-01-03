@@ -1,0 +1,161 @@
+.auth-serachbar {
+    background-color: #454545;
+    padding: 2% 5%;
+}
+.auth-serachbar select {
+    padding: 12px 20px;
+    width: 47%;
+    margin-right: 20px;
+    color: #ffffff;
+    background-color: #454545;
+}
+.serach-header {
+    background-color: var(--iprimary);
+    padding: 15px 30px;
+}
+.adjust-width-first {
+    width: 23%;
+}
+.adjust-width-second {
+    width: 23%;
+}
+.p-heading {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+p {
+    margin: 0px;
+}
+.input-holder-custom {
+    margin-top: 10px;
+}
+
+.input-holder-custom select option {
+    color: white;
+}
+.buttons-custom-container {
+    margin-top: 32px;
+}
+.buttons-custom-container .buttons-custom-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 18px;
+    color: white;
+    margin-right: 10px;
+}
+
+.search-btn-icon {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 800;
+}
+.orange p {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.filter-btn {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    background-color: #2f649a;
+    border: 1px solid #2f649a;
+    border-radius: 0px;
+    padding: 7px 5px;
+}
+
+.filter-btn .filter {
+    margin-right: 12px;
+}
+.adjust-width-second {
+    background-color: #18548f !important;
+    padding: 5px 19px 19px 19px;
+    border-radius: 0px;
+    width: 23%;
+}
+.adjust-width-second .from-to-holder input {
+    width: 45%;
+}
+.adjust-width-second-select {
+    width: 23%;
+}
+
+.adjust-width-second-select select {
+    width: 100%;
+    border-radius: 0px;
+    padding: 13px 10px;
+    border: 1px solid white;
+    background-color: var(--iprimary);
+    color: white;
+}
+
+.row-filters {
+    /* padding: 0px 15px; */
+}
+
+.from-to-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+.from-to-holder p {
+    color: #ffffff;
+}
+
+.from-to-holder input {
+    background-color: var(--iprimary);
+    border: 1px solid white;
+    color: white;
+    border-radius: 0px;
+    font-size: 14px;
+    padding: 13px 10px;
+    width: 136px;
+}
+.from-to-holder input::placeholder {
+    color: white;
+}
+.row-filters select {
+    background-color: var(--iprimary);
+    color: #ffffff;
+    width: 100%;
+    padding: 13px 10px;
+    border-radius: 0px;
+}
+.card-holder {
+    margin-top: 1%;
+    margin-bottom: 4%;
+    min-height: 450px;
+}
+.card-holder .card {
+    padding: 18px 16px;
+    min-width: 94%;
+    border: none;
+    margin-bottom: 12px;
+    border-radius: 0px;
+}
+
+.des {
+    margin: 15px 0px;
+    font-size: 18px;
+}
+.card-colored {
+    background-color: #084887;
+}
+.nav-row {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: #084887;
+    color: #fff;
+}
+/* blue bar */
